@@ -22,74 +22,77 @@ body {
   align-items: center;
 }
 
-.form__option {
+.app {
+  width: 100%;
+  height: 100vh;
+  background-color: #004980;
+  display: grid;
+  place-items: center;
+}
+
+.level {
+  position: absolute;
   width: 480px;
-  height: 459px;
-  display: flex;
-  flex-direction: column;
-
-  background: #c2f5ff;
+  height: 460px;
+  background: #C2F5FF;
   border-radius: 12px;
+  display: grid;
+  place-items: center;
 }
 
-.form__title-div {
-  display: flex;
-  justify-content: center;
-}
-
-.form__title {
+.level_header {
   width: 208px;
   height: 96px;
+}
 
+.level_header_title {
   font-family: "StratosSkyeng";
   font-style: normal;
   font-weight: 400;
   font-size: 40px;
   line-height: 48px;
-
   text-align: center;
   font-feature-settings: "pnum" on, "lnum" on;
-
   color: #004980;
 }
 
-.form__list.form__list-level {
+.level_main {
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 24px;
 }
 
-.form__text-level {
+.level_main_button {
   width: 98px;
   height: 98px;
-  background: #ffffff;
+  background: #FFFFFF;
   border-radius: 12px;
-
   font-family: "StratosSkyeng";
   font-style: normal;
   font-weight: 400;
   font-size: 64px;
   line-height: 72px;
-  color: #0080c1;
+  border: 0;
+  transition: 0.2s ease;
+}
 
+.level_main_button:focus {
+  transform: scale(1.03);
+  box-shadow: 0px 1px 0px 1px rgba(48, 48, 48, 0.671);
+}
+
+.level_footer {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: center;
 }
 
-.form__for-button {
-  display: flex;
-  justify-content: center;
-}
-
-.form__button {
+.start__button {
   width: 246px;
   height: 50px;
-  margin-top: 67px;
   background: #7ac100;
   border-radius: 12px;
-  border: #7ac100;
 
   font-family: "StratosSkyeng";
   font-style: normal;
@@ -98,4 +101,74 @@ body {
   line-height: 32px;
 
   color: #ffffff;
+  border: 0;
+  transition: 0.2s ease;
 }
+
+.start__button:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 1px 0px 0px rgba(48, 48, 48, 0.671);
+}
+
+
+.game {
+  width: 100%;
+  height: 100vh;
+}
+
+.game_header {
+  display: flex;
+  width: 100%;
+  height: 150px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.game_main {
+  height: 30vh;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto auto;
+}
+
+.game_front_card {
+  width: 95px;
+  height: 133px;
+  background: #FFFFFF;
+  border-radius: 4px;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+}
+
+.timer_mil {
+  color: #FFFFFF;
+  font-family: "StratosSkyeng";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+.timer_sec {
+  color: #FFFFFF;
+  font-family: "StratosSkyeng";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+.timer_dot {
+  color: #FFFFFF;
+  font-family: "StratosSkyeng";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+
