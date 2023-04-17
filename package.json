@@ -1,0 +1,33 @@
+{
+  "name": "cart-game",
+  "version": "1.0.0",
+  "description": "Реализация карточной игры, где нужно выбрать все пары карт.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier —write .",
+    "lint:css": "stylelint './src/**.css'",
+    "prepare": "husky install",
+    "lint": "npm run lint:js && npm run lint:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzum197/cart-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dzum197/cart-game/issues"
+  },
+  "homepage": "https://github.com/dzum197/cart-game#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "axios": "^1.3.5",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.7"
+  }
+}
