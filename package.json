@@ -10,7 +10,9 @@
     "prepare": "husky install",
     "lint": "npm run lint:js && npm run lint:css",
     "dev": "webpack --mode development",
-    "serve": "webpack serve --open --mode development --config dev/serve.config.js"
+    "serve": "webpack serve --open --mode development --config dev/serve.config.js",
+    "build": "NODE_ENV=production webpack",
+    "start": "webpack-dev-server ––open"
   },
   "repository": {
     "type": "git",
