@@ -1,233 +1,214 @@
-let intervalId;
-const gameDelay = 5000;
+// // Обработчик клика на карточку
+// function handleCardClick(event) {
+//   const card = event.target;
 
-// Функция для создания карточек игры
-function createCard(container, cardIndex) {
-  const front = document.createElement("div");
-  front.classList.add("game_front");
-  container.appendChild(front);
+//   // Если карточка уже открыта, ничего не делаем
+//   if (card.classList.contains("flipped")) {
+//     return;
+//   }
 
-  const card = document.createElement("div");
-  card.classList.add("game_front_card");
-  front.appendChild(card);
+//   // Открываем карточку
+//   card.classList.add("flipped");
 
-  const img = document.createElement("img");
-  img.src = `${window.application.cards[0][cardIndex]}`;
-  card.appendChild(img);
+//   // Получаем открытые карточки
+//   const flippedCards = document.querySelectorAll("flipped");
 
-  const back = document.createElement("div");
-  back.classList.add("game_back");
-  card.appendChild(back);
+//   // Если открыто две карточки, сравниваем их
+//   if (flippedCards.length === 2) {
+//     const firstCardImg = flippedCards[0].querySelector("img");
+//     const secondCardImg = flippedCards[1].querySelector("img");
 
-  // Назначение обработчика клика на карточке
-  card.addEventListener("click", handleCardClick);
+//     // console.log('debug');
+//     // Если выбраны две одинаковые карты, то они остаются открытыми,
+//     // иначе закрываем обе карты
+//     if (firstCardImg.src === secondCardImg.src) {
 
-  return card;
-}
+//       flippedCards.forEach((card) => card.classList.remove("flipped"));
+//     } else {
+//       setTimeout(() => {
+//         flippedCards.forEach((card) => card.classList.remove("flipped"));
+//       }, 1000);
+//     }
+//   }
+// }
 
-// Функции для рендеринга игровых зон с разной сложностью
-function renderGameZone1(container) {
-  for (let i = 1; i <= 8; i++) {
-    const cardIndex = Math.round(Math.random() * 8);
-    const card = createCard(container, cardIndex);
-    intervalId = setTimeout(() => {
-      card.querySelector("img").src = "img/рубашка.png";
-      clearInterval(interval);
-      interval = setInterval(startTimer, 10);
-    }, gameDelay);
-  }
-}
+// // Функция для создания карточек игры
+// function createCard(container, cardIndex) {
+//   const front = document.createElement("div");
+//   front.classList.add("game_front");
+//   container.appendChild(front);
 
-function renderGameZone2(container) {
-  for (let i = 1; i <= 12; i++) {
-    const cardIndex = Math.round(Math.random() * 12);
-    const card = createCard(container, cardIndex);
-    intervalId = setTimeout(() => {
-      card.querySelector("img").src = "img/рубашка.png";
-      clearInterval(interval);
-      interval = setInterval(startTimer, 10);
-    }, gameDelay);
-  }
-}
+//   const card = document.createElement("div");
+//   card.classList.add("game_front_card");
+//   front.appendChild(card);
 
-function renderGameZone3(container) {
-  for (let i = 1; i <= 16; i++) {
-    const cardIndex = Math.round(Math.random() * 16);
-    const card = createCard(container, cardIndex);
-    intervalId = setTimeout(() => {
-      card.querySelector("img").src = "img/рубашка.png";
-      clearInterval(interval);
-      interval = setInterval(startTimer, 10);
-    }, gameDelay);
-  }
-}
+//   const img = document.createElement("img");
+//   img.src = `${window.application.cards[0][cardIndex]}`;
+//   card.appendChild(img);
 
-// кол-во карт исходя из уровня сложности
-function levelDifficulty() {
-  const level = window.application.level[window.application.level.length - 1];
+//   const back = document.createElement("div");
+//   back.classList.add("game_back");
+//   card.appendChild(back);
 
-  switch (level) {
-    case "1":
-      window.application.blocks["game-card"] = renderGameZone1;
-      break;
+//   // Назначение обработчика клика на карточке
+//   card.addEventListener("click", handleCardClick);
 
-    case "2":
-      window.application.blocks["game-card"] = renderGameZone2;
-      break;
+//   return card;
+// }
 
-    case "3":
-      window.application.blocks["game-card"] = renderGameZone3;
-      break;
+// // Функции для рендеринга игровых зон с разной сложностью
+// function renderGameZone1(container) {
+//   for (let i = 1; i <= 8; i++) {
+//     const cardIndex = Math.round(Math.random() * 8);
+//     const card = createCard(container, cardIndex);
+//     intervalId = setTimeout(() => {
+//       card.querySelector("img").src = "img/рубашка.png";
+//       clearInterval(interval);
+//       interval = setInterval(startTimer, 10);
+//     }, gameDelay);
+//   }
+// }
 
-    default:
-      break;
-  }
-}
+// function renderGameZone2(container) {
+//   for (let i = 1; i <= 12; i++) {
+//     const cardIndex = Math.round(Math.random() * 12);
+//     const card = createCard(container, cardIndex);
+//     intervalId = setTimeout(() => {
+//       card.querySelector("img").src = "img/рубашка.png";
+//       clearInterval(interval);
+//       interval = setInterval(startTimer, 10);
+//     }, gameDelay);
+//   }
+// }
 
-// Обработчик клика на карточку
-function handleCardClick(event) {
-  const card = event.target;
+// function renderGameZone3(container) {
+//   for (let i = 1; i <= 16; i++) {
+//     const cardIndex = Math.round(Math.random() * 16);
+//     const card = createCard(container, cardIndex);
+//     intervalId = setTimeout(() => {
+//       card.querySelector("img").src = "img/рубашка.png";
+//       clearInterval(interval);
+//       interval = setInterval(startTimer, 10);
+//     }, gameDelay);
+//   }
+// }
 
-  // Если карточка уже открыта, ничего не делаем
-  if (card.classList.contains("flipped")) {
-    return;
-  }
+// // кол-во карт исходя из уровня сложности
+// function levelDifficulty() {
+//   const level = window.application.level[window.application.level.length - 1];
 
-  // Открываем карточку
-  card.classList.add("flipped");
+//   switch (level) {
+//     case "1":
+//       window.application.blocks["game-card"] = renderGameZone1;
+//       break;
 
-  // Получаем открытые карточки
-  const flippedCards = document.querySelectorAll("flipped");
+//     case "2":
+//       window.application.blocks["game-card"] = renderGameZone2;
+//       break;
 
-  // Если открыто две карточки, сравниваем их
-  if (flippedCards.length === 2) {
-    const firstCardImg = flippedCards[0].querySelector("img");
-    const secondCardImg = flippedCards[1].querySelector("img");
+//     case "3":
+//       window.application.blocks["game-card"] = renderGameZone3;
+//       break;
 
-    // console.log('debug');
-    // Если выбраны две одинаковые карты, то они остаются открытыми,
-    // иначе закрываем обе карты
-    if (firstCardImg.src === secondCardImg.src) {
-      
-      flippedCards.forEach((card) => card.classList.remove("flipped"));
-    } else {
-      setTimeout(() => {
-        flippedCards.forEach((card) => card.classList.remove("flipped"));
-      }, 1000);
-    }
-  }
-}
+//     default:
+//       break;
+//   }
+// }
 
-// Добавляем обработчик для каждой карточки
-const gameCards = document.querySelectorAll(".game_front_card");
-gameCards.forEach((card) => card.addEventListener("click", handleCardClick));
+// // Обновляем функцию renderAgainButton, чтобы удалить класс "flipped" для всех карт
+// function renderAgainButton(container) {
 
-// Обновляем функцию renderAgainButton, чтобы удалить класс "flipped" для всех карт
-function renderAgainButton(container) {
-  
-  const againButton = document.createElement("button");
-  againButton.classList.add("level_footer_button");
-  againButton.textContent = "Начать заново";
-  container.appendChild(againButton);
-  // Добавляем обработчик клика на кнопку "Начать заново"
-  againButton.addEventListener("click", () => {
-    gameCards.forEach((card) => card.classList.remove("flipped"));
-  });
-}
+//   const againButton = document.createElement("button");
+//   againButton.classList.add("level_footer_button");
+//   againButton.textContent = "Начать заново";
+//   container.appendChild(againButton);
+//   // Добавляем обработчик клика на кнопку "Начать заново"
+//   againButton.addEventListener("click", () => {
+//     gameCards.forEach((card) => card.classList.remove("flipped"));
+//   });
+// }
 
-function renderTimer(container) {
-  
-  const timer = document.createElement("div");
-  timer.classList.add("timer");
-  container.appendChild(timer);
+// function renderTimer(container) {
 
-  sec = document.createElement("h2");
-  sec.classList.add("timer_sec");
-  sec.textContent = "00";
-  timer.appendChild(sec);
+//   const timer = document.createElement("div");
+//   timer.classList.add("timer");
+//   container.appendChild(timer);
 
-  dot = document.createElement("span");
-  dot.classList.add("timer_dot");
-  dot.textContent = ".";
-  timer.appendChild(dot);
+//   sec = document.createElement("h2");
+//   sec.classList.add("timer_sec");
+//   sec.textContent = "00";
+//   timer.appendChild(sec);
 
-  milS = document.createElement("h2");
-  milS.classList.add("timer_mil");
-  milS.textContent = "00";
-  timer.appendChild(milS);
-}
+//   dot = document.createElement("span");
+//   dot.classList.add("timer_dot");
+//   dot.textContent = ".";
+//   timer.appendChild(dot);
 
-let dot;
-let sec;
-let milS;
-let second = 0,
-  mil = 0,
-  interval;
+//   milS = document.createElement("h2");
+//   milS.classList.add("timer_mil");
+//   milS.textContent = "00";
+//   timer.appendChild(milS);
+// }
 
-function startTimer() {
-  
-  let milElem = document.querySelector(".timer_mil");
-  let secElem = document.querySelector(".timer_sec");
+// function startTimer() {
 
-  mil++;
-  if (mil < 9) {
-    milElem.textContent = "0" + mil;
-  }
+//   let milElem = document.querySelector(".timer_mil");
+//   let secElem = document.querySelector(".timer_sec");
 
-  if (mil > 9) {
-    milElem.textContent = mil;
-  }
+//   mil++;
+//   if (mil < 9) {
+//     milElem.textContent = "0" + mil;
+//   }
 
-  if (mil > 99) {
-    second++;
-    secElem.textContent = "0" + second;
-    mil = 0;
-    milElem.textContent = "0" + mil;
-  }
+//   if (mil > 9) {
+//     milElem.textContent = mil;
+//   }
 
-  // секунды
-  if (second < 9) {
-    secElem.textContent = "0" + second;
-  }
-  if (second > 9) {
-    secElem.textContent = second;
-  }
-  if (second > 59 || mil > 99) {
-    clearInterval(interval);
-    alert("Вы проиграли!");
-    sec = 0;
-    mil = 0;
+//   if (mil > 99) {
+//     second++;
+//     secElem.textContent = "0" + second;
+//     mil = 0;
+//     milElem.textContent = "0" + mil;
+//   }
 
-    // Экран поражения
-  }
-}
+//   // секунды
+//   if (second < 9) {
+//     secElem.textContent = "0" + second;
+//   }
+//   if (second > 9) {
+//     secElem.textContent = second;
+//   }
+//   if (second > 59 || mil > 99) {
+//     clearInterval(interval);
+//     alert("Вы проиграли!");
+//     sec = 0;
+//     mil = 0;
 
-window.application.blocks["again-button"] = renderAgainButton;
-window.application.blocks["timer"] = renderTimer;
+//     // Экран поражения
+//   }
+// }
 
-function renderGameScreen() {
-  
-  levelDifficulty();
-  const gameZoneContainer = document.createElement("div");
-  gameZoneContainer.classList.add("game");
+// function renderGameScreen() {
 
-  const header = document.createElement("header");
-  header.classList.add("game_header");
+//   levelDifficulty();
+//   const gameZoneContainer = document.createElement("div");
+//   gameZoneContainer.classList.add("game");
 
-  const main = document.createElement("main");
-  main.classList.add("game_main");
-  main.classList.add("center");
+//   const header = document.createElement("header");
+//   header.classList.add("game_header");
 
-  gameZoneContainer.appendChild(header);
-  gameZoneContainer.appendChild(main);
-  app.appendChild(gameZoneContainer);
+//   const main = document.createElement("main");
+//   main.classList.add("game_main");
+//   main.classList.add("center");
 
-  window.application.renderBlock("timer", header);
-  window.application.renderBlock("again-button", header);
-  window.application.renderBlock("game-card", main);
+//   gameZoneContainer.appendChild(header);
+//   gameZoneContainer.appendChild(main);
+//   app.appendChild(gameZoneContainer);
 
-  const gameBacks = document.querySelectorAll(".game_back");
-  gameBacks.forEach((back) => back.classList.add("back"));
-}
-// Добавляем "game" в список завершённых экранов
-window.application.screens["game"] = renderGameScreen;
+//   window.application.renderBlock("timer", header);
+//   window.application.renderBlock("again-button", header);
+//   window.application.renderBlock("game-card", main);
+
+//   const gameBacks = document.querySelectorAll(".game_back");
+//   gameBacks.forEach((back) => back.classList.add("back"));
+// }
