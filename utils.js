@@ -1,53 +1,7 @@
-import './style.css'
-// import { handleCardClick } from './utils'
-// import { createCard } from './utils'
-// import { renderGameZone1 } from './utils'
-// import { renderGameZone2 } from './utils'
-// import { renderGameZone3 } from './utils'
-// import { levelDifficulty } from './utils'
-// import { renderAgainButton } from './utils'
-// import { renderTimer } from './utils'
-// import { startTimer } from './utils'
-// import { renderGameScreen } from './utils'
-// import { renderLevelsButton } from './utils'
-// import { levelsEvent } from './utils'
-// import { renderStartButton } from './utils'
-// import { renderMenuTitle } from './utils'
-// import { renderStartMenu } from './utils'
-
-const app = document.querySelector('.app')
-
-window.application = {
-    blocks: {},
-    screens: {},
-    timers: [],
-    level: [],
-    cards: [],
-
-    renderScreen: function (screenName) {
-        window.application.timers.forEach((id) => {
-            clearInterval(id)
-        })
-
-        if (window.application.screens[screenName]) {
-            app.innerHTML = ''
-
-            window.application.screens[screenName]()
-        }
-    },
-    renderBlock: function (blockName, container) {
-        if (window.application.blocks[blockName]) {
-            window.application.blocks[blockName](container)
-        } else {
-            console.warn('Ошибка')
-        }
-    },
-}
-
 let intervalId
 const gameDelay = 5000
 
-function handleCardClick(event) {
+export function handleCardClick(event) {
     const card = event.target
 
     // Если карточка уже открыта, ничего не делаем
@@ -79,7 +33,7 @@ function handleCardClick(event) {
     }
 }
 
-function createCard(container, cardIndex) {
+export function createCard(container, cardIndex) {
     const front = document.createElement('div')
     front.classList.add('game-front')
     container.appendChild(front)
@@ -102,7 +56,7 @@ function createCard(container, cardIndex) {
     return card
 }
 
-function renderGameZone1(container) {
+export function renderGameZone1(container) {
     for (let i = 1; i <= 8; i++) {
         const cardIndex = Math.round(Math.random() * 8)
         const card = createCard(container, cardIndex)
@@ -114,7 +68,7 @@ function renderGameZone1(container) {
     }
 }
 
-function renderGameZone2(container) {
+export function renderGameZone2(container) {
     for (let i = 1; i <= 12; i++) {
         const cardIndex = Math.round(Math.random() * 12)
         const card = createCard(container, cardIndex)
@@ -126,7 +80,7 @@ function renderGameZone2(container) {
     }
 }
 
-function renderGameZone3(container) {
+export function renderGameZone3(container) {
     for (let i = 1; i <= 16; i++) {
         const cardIndex = Math.round(Math.random() * 16)
         const card = createCard(container, cardIndex)
@@ -138,7 +92,7 @@ function renderGameZone3(container) {
     }
 }
 
-function levelDifficulty() {
+export function levelDifficulty() {
     const level = window.application.level[window.application.level.length - 1]
 
     switch (level) {
@@ -163,7 +117,7 @@ function levelDifficulty() {
 const gameCards = document.querySelectorAll('.game-front-card')
 gameCards.forEach((card) => card.addEventListener('click', handleCardClick))
 
-function renderAgainButton(container) {
+export function renderAgainButton(container) {
     const againButton = document.createElement('button')
     againButton.classList.add('level-footer-button')
     againButton.textContent = 'Начать заново'
@@ -174,7 +128,7 @@ function renderAgainButton(container) {
     })
 }
 
-function renderTimer(container) {
+export function renderTimer(container) {
     const timer = document.createElement('div')
     timer.classList.add('timer')
     container.appendChild(timer)
@@ -202,7 +156,7 @@ let second = 0,
     mil = 0,
     interval
 
-function startTimer() {
+export function startTimer() {
     let milElem = document.querySelector('.timer-mil')
     let secElem = document.querySelector('.timer-sec')
 
@@ -242,7 +196,9 @@ function startTimer() {
 window.application.blocks['again-button'] = renderAgainButton
 window.application.blocks['timer'] = renderTimer
 
-function renderGameScreen() {
+const app = document.querySelector('.app')
+
+export function renderGameScreen() {
     levelDifficulty()
     const gameZoneContainer = document.createElement('div')
     gameZoneContainer.classList.add('game')
@@ -269,7 +225,7 @@ function renderGameScreen() {
 // Добавляем "game" в список завершённых экранов
 window.application.screens['game'] = renderGameScreen
 
-function renderLevelsButton(container) {
+export function renderLevelsButton(container) {
     for (let i = 1; i <= 3; i++) {
         const levelButton = document.createElement('input')
         levelButton.setAttribute('type', 'button')
@@ -303,32 +259,28 @@ function renderLevelsButton(container) {
 
 let startButton
 
-function levelsEvent(param) {
+export function levelsEvent(param) {
     startButton.addEventListener('click', () => {
         window.application.renderScreen('game')
         console.log(`Уровень сложности ${param}`)
     })
 }
 
-function renderStartButton(container) {
+export function renderStartButton(container) {
     startButton = document.createElement('button')
     startButton.classList.add('start-button')
     startButton.textContent = 'Старт'
     container.appendChild(startButton)
 }
 
-function renderMenuTitle(container) {
+export function renderMenuTitle(container) {
     const levelTitle = document.createElement('h1')
     levelTitle.classList.add('level-header-title')
     levelTitle.textContent = 'Выбери сложность'
     container.appendChild(levelTitle)
 }
 
-window.application.blocks['menu-title'] = renderMenuTitle
-window.application.blocks['level-button'] = renderLevelsButton
-window.application.blocks['start-button'] = renderStartButton
-
-function renderStartMenu() {
+export function renderStartMenu() {
     const startMenuContainer = document.createElement('div')
     startMenuContainer.classList.add('level')
 
@@ -351,19 +303,3 @@ function renderStartMenu() {
     window.application.renderBlock('level-button', startMenuLevel)
     window.application.renderBlock('start-button', startMenuStart)
 }
-
-renderStartMenu()
-
-// handleCardClick()
-// createCard()
-// renderGameZone1()
-// renderGameZone2()
-// renderGameZone3()
-// levelDifficulty()
-// renderAgainButton()
-// renderTimer()
-// startTimer()
-// renderGameScreen()
-// renderLevelsButton()
-// levelsEvent()
-// renderStartButton()
