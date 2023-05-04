@@ -4,7 +4,7 @@ const FileManagerPlugin = require('filemanager-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-    entry: path.join(__dirname, 'index.js'),
+    entry: './index.js',
     mode: 'development',
     module: {
         rules: [
@@ -16,6 +16,11 @@ module.exports = {
                     'postcss-loader',
                     'sass-loader',
                 ],
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader'],
             },
         ],
     },
@@ -40,12 +45,13 @@ module.exports = {
         watchFiles: path.join(__dirname, 'src'),
         port: 9000,
     },
-    devtool:
-        process.env.NODE_ENV === 'production'
-            ? 'hidden-source-map'
-            : 'source-map',
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    devtool: 'source-map',
     output: {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js',
+        clean: true,
     },
 }
