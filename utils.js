@@ -1,4 +1,4 @@
-// let intervalId
+let intervalId
 const gameDelay = 5000
 
 export function handleCardClick(event) {

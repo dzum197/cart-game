@@ -1,3 +1,4 @@
+import './style.css'
 import { handleCardClick } from './utils'
 import { createCard } from './utils'
 import { renderGameZone1 } from './utils'
