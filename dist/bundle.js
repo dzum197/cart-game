@@ -1,4 +1,82 @@
-import './style.css'
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./style.css":
+/*!*******************!*\
+  !*** ./style.css ***!
+  \*******************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./style.css");
+
+// import { handleCardClick } from './utils'
+// import { createCard } from './utils'
+// import { renderGameZone1 } from './utils'
+// import { renderGameZone2 } from './utils'
+// import { renderGameZone3 } from './utils'
+// import { levelDifficulty } from './utils'
+// import { renderAgainButton } from './utils'
+// import { renderTimer } from './utils'
+// import { startTimer } from './utils'
+// import { renderGameScreen } from './utils'
+// import { renderLevelsButton } from './utils'
+// import { levelsEvent } from './utils'
+// import { renderStartButton } from './utils'
+// import { renderMenuTitle } from './utils'
+// import { renderStartMenu } from './utils'
 
 const app = document.querySelector('.app')
 
@@ -70,45 +148,74 @@ const game = {
     },
 }
 
+// handleCardClick()
+// createCard()
+// renderGameZone1()
+// renderGameZone2()
+// renderGameZone3()
+// levelDifficulty()
+// renderAgainButton()
+// renderTimer()
+// startTimer()
+// renderGameScreen()
+// renderLevelsButton()
+// levelsEvent()
+// renderStartButton()
+// renderMenuTitle()
+// renderStartMenu()
+
 let intervalId
 const gameDelay = 5000
 
+function handleCardClick(event) {
+    const card = event.currentTarget
+
+    // Если карточка уже открыта, ничего не делаем
+    if (card.classList.contains('flipped')) {
+        return
+    }
+
+    // Открываем карточку
+    card.classList.add('flipped')
+
+    // Получаем открытые карточки
+    const flippedCards = document.querySelectorAll('flipped')
+
+    // Если открыто две карточки, сравниваем их
+    if (flippedCards.length === 2) {
+        const firstCardImg = flippedCards[0].querySelector('img')
+        const secondCardImg = flippedCards[1].querySelector('img')
+
+        // console.log('debug');
+        // Если выбраны две одинаковые карты, то они остаются открытыми,
+        // иначе закрываем обе карты
+        if (firstCardImg.src === secondCardImg.src) {
+            flippedCards.forEach((card) => card.classList.remove('flipped'))
+        } else {
+            setTimeout(() => {
+                flippedCards.forEach((card) => card.classList.remove('flipped'))
+            }, 1000)
+        }
+    }
+}
+
 function createCard(container, cardIndex) {
+    const front = document.createElement('div')
+    front.classList.add('game-front')
+    container.appendChild(front)
+
     const card = document.createElement('div')
-    card.classList.add('main-game-card')
-    container.appendChild(card)
+    card.classList.add('game-front-card')
+    front.appendChild(card)
 
-    const front = document.createElement('img')
-    front.classList.add('front-card')
-    // front.src = `${game.cards[0][cardIndex]}`
-    front.setAttribute('src', `${game.cards[0][cardIndex]}`)
-    card.appendChild(front)
-
-    // const img = document.createElement('img')
-    // // img.src = `${window.application.cards[0][cardIndex]}`
-    // img.src = `${game.cards[0][cardIndex]}`
-    // card.appendChild(img)
+    const img = document.createElement('img')
+    // img.src = `${window.application.cards[0][cardIndex]}`
+    img.src = `${game.cards[0][cardIndex]}`
+    card.appendChild(img)
 
     const back = document.createElement('div')
-    back.classList.add('back-card')
+    back.classList.add('game-back')
     card.appendChild(back)
-
-    // const front = document.createElement('div')
-    // front.classList.add('game-front')
-    // container.appendChild(front)
-
-    // const card = document.createElement('div')
-    // card.classList.add('game-front-card')
-    // front.appendChild(card)
-
-    // const img = document.createElement('img')
-    // // img.src = `${window.application.cards[0][cardIndex]}`
-    // img.src = `${game.cards[0][cardIndex]}`
-    // card.appendChild(img)
-
-    // const back = document.createElement('div')
-    // back.classList.add('game-back')
-    // card.appendChild(back)
 
     // Назначение обработчика клика на карточке
     card.addEventListener('click', handleCardClick)
@@ -116,93 +223,12 @@ function createCard(container, cardIndex) {
     return card
 }
 
-function handleCardClick(event) {
-    const card = event.currentTarget
-    const cards = document.querySelectorAll('.main-game-card')
-
-    // Открываем карточку
-    card.classList.add('flipped')
-
-    // Если карточка уже открыта, ничего не делаем
-    if (card.classList.contains('flipped')) {
-        return
-    }
-
-    // Получаем открытые карточки
-    const flippedCards = document.querySelectorAll('flipped')
-
-    // Если открыто две карточки, сравниваем их
-    // if (flippedCards.length === 2) {
-    let hasFlippedCard = false
-    let lockBoard = false
-    let firstCardImg = flippedCards[0].querySelector('front')
-    let secondCardImg = flippedCards[1].querySelector('front')
-
-    function flipCard() {
-        if (lockBoard) return
-        if (this === firstCardImg) return
-
-        this.classList.add('flipped')
-
-        if (!hasFlippedCard) {
-            hasFlippedCard = true
-            firstCardImg = this
-            return
-        }
-
-        secondCardImg = this
-
-        checkForMatch()
-        // console.log('debug');
-        // Если выбраны две одинаковые карты, то они остаются открытыми,
-        // иначе закрываем обе карты
-        // if (firstCardImg.src === secondCardImg.src) {
-        //     flippedCards.forEach((card) => card.classList.remove('flipped'))
-        // } else {
-        //     setTimeout(() => {
-        //         flippedCards.forEach((card) => card.classList.remove('flipped'))
-        //     }, 1000)
-        // }
-    }
-
-    function checkForMatch() {
-        let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
-        isMatch ? disableCards() : unflipCards()
-    }
-
-    function disableCards() {
-        firstCardImg.removeEventListener('click', flipCard)
-        secondCardImg.removeEventListener('click', flipCard)
-
-        resetBoard()
-    }
-
-    function unflipCards() {
-        lockBoard = true
-
-        setTimeout(() => {
-            firstCardImg.classList.remove('flipped')
-            secondCardImg.classList.remove('flipped')
-
-            lockBoard = false
-        }, 1500)
-    }
-
-    function resetBoard() {
-        ;[hasFlippedCard, lockBoard] = [false, false][
-            (firstCardImg, secondCardImg)
-        ] = [null, null]
-    }
-    cards.forEach((card) => card.addEventListener('click', flipCard))
-    // }
-}
-
 function renderGameZone1(container) {
     for (let i = 1; i <= 8; i++) {
         const cardIndex = Math.round(Math.random() * 8)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('img').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -214,7 +240,7 @@ function renderGameZone2(container) {
         const cardIndex = Math.round(Math.random() * 12)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('img').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -226,7 +252,7 @@ function renderGameZone3(container) {
         const cardIndex = Math.round(Math.random() * 16)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('img').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -261,10 +287,25 @@ function renderAgainButton(container) {
     againButton.textContent = 'Начать заново'
     container.appendChild(againButton)
     againButton.addEventListener('click', () => {
-        const gameCards = document.querySelectorAll('.main-game-card')
+        const gameCards = document.querySelectorAll('.game-front-card')
         gameCards.forEach((card) => card.classList.remove('flipped'))
     })
 }
+
+// // Добавляем обработчик для каждой карточки
+// const gameCards = document.querySelectorAll('.game-front-card')
+// gameCards.forEach((card) => card.addEventListener('click', handleCardClick))
+
+// function renderAgainButton(container) {
+//     const againButton = document.createElement('button')
+//     againButton.classList.add('level-footer-button')
+//     againButton.textContent = 'Начать заново'
+//     container.appendChild(againButton)
+//     // Добавляем обработчик клика на кнопку "Начать заново"
+//     againButton.addEventListener('click', () => {
+//         gameCards.forEach((card) => card.classList.remove('flipped'))
+//     })
+// }
 
 function renderTimer(container) {
     const timer = document.createElement('div')
@@ -500,3 +541,9 @@ game.cards = [
 ]
 // Запуск начального экрана
 game.renderScreen('start')
+
+})();
+
+/******/ })()
+;
+//# sourceMappingURL=bundle.js.map

@@ -1,0 +1,180 @@
+/*!**********************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./style.css ***!
+  \**********************************************************************************************************************************************/
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: StratosSkyeng, sans-serif;
+  src: url(ce93393e831d32412096.woff2) format("woff2"), url(d7d99bd522cf2d77ce4a.woff) format("woff");
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #004980;
+  min-height: 100%;
+  font-family: StratosSkyeng, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 100%;
+  height: 100vh;
+  background-color: #004980;
+  display: grid;
+  place-items: center;
+}
+
+.level {
+  position: absolute;
+  width: 480px;
+  height: 460px;
+  background: #c2f5ff;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+}
+
+.level-header {
+  width: 208px;
+  height: 96px;
+}
+
+.level-header-title {
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 48px;
+  text-align: center;
+  font-feature-settings: "pnum" on, "lnum" on;
+  color: #004980;
+}
+
+.level-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.level-main-button {
+  width: 98px;
+  height: 98px;
+  background: #fff;
+  border-radius: 12px;
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+  border: 0;
+  transition: 0.2s ease;
+}
+
+.level-main-button:focus {
+  transform: scale(1.03);
+  box-shadow: 0 1px 0 1px rgba(48, 48, 48, 0.671);
+}
+
+.level-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-button,
+.level-footer-button {
+  width: 246px;
+  height: 50px;
+  background: #7ac100;
+  border-radius: 12px;
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  color: #fff;
+  border: 0;
+  transition: 0.2s ease;
+}
+
+.start-button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 1px 0 0 rgba(48, 48, 48, 0.671);
+}
+
+.game {
+  width: 100%;
+  height: 100vh;
+}
+
+.game-header {
+  display: flex;
+  width: 100%;
+  height: 150px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.game-main {
+  height: 30vh;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto auto;
+}
+
+.game-front-card {
+  width: 95px;
+  height: 133px;
+  background: #fff;
+  border-radius: 4px;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+}
+
+.timer-mil {
+  color: #fff;
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+.timer-sec {
+  color: #fff;
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+.timer-dot {
+  color: #fff;
+  font-family: StratosSkyeng, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+/*# sourceMappingURL=style.css.map*/

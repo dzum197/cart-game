@@ -2,9 +2,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const FileManagerPlugin = require('filemanager-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-    entry: path.join(__dirname, 'index.js'),
+    entry: './index.js',
     mode: 'development',
     module: {
         rules: [
@@ -16,6 +17,19 @@ module.exports = {
                     'postcss-loader',
                     'sass-loader',
                 ],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader'],
             },
         ],
     },
@@ -35,17 +49,21 @@ module.exports = {
             // filename: "[name].[contenthash].css",
             filename: 'style.css',
         }),
+        new CopyPlugin({
+            patterns: [{ from: 'img', to: 'img' }],
+        }),
     ],
     devServer: {
         watchFiles: path.join(__dirname, 'src'),
         port: 9000,
     },
-    devtool:
-        process.env.NODE_ENV === 'production'
-            ? 'hidden-source-map'
-            : 'source-map',
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    devtool: 'source-map',
     output: {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js',
+        clean: true,
     },
 }

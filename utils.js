@@ -1,3 +1,69 @@
+const game = {
+    blocks: {},
+    screens: {},
+    timers: [],
+    level: [],
+    cards: [
+        [
+            './img/10бубны.png',
+            './img/10крести.png',
+            './img/10пики.png',
+            './img/10черви.png',
+            './img/6бубны.png',
+            './img/6крести.png',
+            './img/6пики.png',
+            './img/6черви.png',
+            './img/7бубны.png',
+            './img/7крести.png',
+            './img/7пики.png',
+            './img/7черви.png',
+            './img/8бубны.png',
+            './img/8крести.png',
+            './img/8пики.png',
+            './img/8черви.png',
+            './img/9бубны.png',
+            './img/9крести.png',
+            './img/9пики.png',
+            './img/9черви.png',
+            './img/валетБубны.png',
+            './img/валетКрести.png',
+            './img/валетПики.png',
+            './img/валетЧерви.png',
+            './img/дамаБубны.png',
+            './img/дамаКрести.png',
+            './img/дамаПики.png',
+            './img/дамаЧерви.png',
+            './img/корольБубны.png',
+            './img/корольКрести.png',
+            './img/корольПики.png',
+            './img/корольЧерви.png',
+            './img/тузБубны.png',
+            './img/тузКрести.png',
+            './img/тузПики.png',
+            './img/тузЧерви.png',
+        ],
+    ],
+
+    renderScreen: function (screenName) {
+        game.timers.forEach((id) => {
+            clearInterval(id)
+        })
+
+        if (game.screens[screenName]) {
+            app.innerHTML = ''
+
+            game.screens[screenName]()
+        }
+    },
+    renderBlock: function (blockName, container) {
+        if (game.blocks[blockName]) {
+            game.blocks[blockName](container)
+        } else {
+            console.warn('Ошибка')
+        }
+    },
+}
+
 let intervalId
 const gameDelay = 5000
 
@@ -34,21 +100,39 @@ export function handleCardClick(event) {
 }
 
 export function createCard(container, cardIndex) {
-    const front = document.createElement('div')
-    front.classList.add('game-front')
-    container.appendChild(front)
-
     const card = document.createElement('div')
-    card.classList.add('game-front-card')
-    front.appendChild(card)
+    card.classList.add('main-game-card')
+    container.appendChild(card)
 
-    const img = document.createElement('img')
-    img.src = `${window.application.cards[0][cardIndex]}`
-    card.appendChild(img)
+    const front = document.createElement('img')
+    front.classList.add('front-card')
+    front.setAttribute('src', `${game.cards[0][cardIndex]}`)
+    card.appendChild(front)
+
+    // const img = document.createElement('img')
+    // // img.src = `${window.application.cards[0][cardIndex]}`
+    // img.src = `${game.cards[0][cardIndex]}`
+    // card.appendChild(img)
 
     const back = document.createElement('div')
-    back.classList.add('game-back')
+    back.classList.add('back-card')
     card.appendChild(back)
+
+    // const front = document.createElement('div')
+    // front.classList.add('game-front')
+    // container.appendChild(front)
+
+    // const card = document.createElement('div')
+    // card.classList.add('game-front-card')
+    // front.appendChild(card)
+
+    // const img = document.createElement('img')
+    // img.src = `${game.cards[0][cardIndex]}`
+    // card.appendChild(img)
+
+    // const back = document.createElement('div')
+    // back.classList.add('game-back')
+    // card.appendChild(back)
 
     // Назначение обработчика клика на карточке
     card.addEventListener('click', handleCardClick)
@@ -61,7 +145,7 @@ export function renderGameZone1(container) {
         const cardIndex = Math.round(Math.random() * 8)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('img').src = 'img/рубашка.png'
+            card.querySelector('front').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -73,7 +157,7 @@ export function renderGameZone2(container) {
         const cardIndex = Math.round(Math.random() * 12)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('img').src = 'img/рубашка.png'
+            card.querySelector('front').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -85,7 +169,7 @@ export function renderGameZone3(container) {
         const cardIndex = Math.round(Math.random() * 16)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('img').src = 'img/рубашка.png'
+            card.querySelector('front').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -93,19 +177,19 @@ export function renderGameZone3(container) {
 }
 
 export function levelDifficulty() {
-    const level = window.application.level[window.application.level.length - 1]
+    const level = game.level[game.level.length - 1]
 
     switch (level) {
         case '1':
-            window.application.blocks['game-card'] = renderGameZone1
+            game.blocks['game-card'] = renderGameZone1
             break
 
         case '2':
-            window.application.blocks['game-card'] = renderGameZone2
+            game.blocks['game-card'] = renderGameZone2
             break
 
         case '3':
-            window.application.blocks['game-card'] = renderGameZone3
+            game.blocks['game-card'] = renderGameZone3
             break
 
         default:
@@ -114,7 +198,7 @@ export function levelDifficulty() {
 }
 
 // Добавляем обработчик для каждой карточки
-const gameCards = document.querySelectorAll('.game-front-card')
+const gameCards = document.querySelectorAll('.main-game-card')
 gameCards.forEach((card) => card.addEventListener('click', handleCardClick))
 
 export function renderAgainButton(container) {
@@ -193,8 +277,8 @@ export function startTimer() {
     }
 }
 
-window.application.blocks['again-button'] = renderAgainButton
-window.application.blocks['timer'] = renderTimer
+game.blocks['again-button'] = renderAgainButton
+game.blocks['timer'] = renderTimer
 
 const app = document.querySelector('.app')
 
@@ -214,16 +298,16 @@ export function renderGameScreen() {
     gameZoneContainer.appendChild(main)
     app.appendChild(gameZoneContainer)
 
-    window.application.renderBlock('timer', header)
-    window.application.renderBlock('again-button', header)
-    window.application.renderBlock('game-card', main)
+    game.renderBlock('timer', header)
+    game.renderBlock('again-button', header)
+    game.renderBlock('game-card', main)
 
     const gameBacks = document.querySelectorAll('.game-back')
     gameBacks.forEach((back) => back.classList.add('back'))
 }
 
 // Добавляем "game" в список завершённых экранов
-window.application.screens['game'] = renderGameScreen
+game.screens['game'] = renderGameScreen
 
 export function renderLevelsButton(container) {
     for (let i = 1; i <= 3; i++) {
@@ -234,8 +318,8 @@ export function renderLevelsButton(container) {
         container.appendChild(levelButton)
 
         levelButton.addEventListener('click', () => {
-            window.application.level.pop()
-            window.application.level.push(levelButton.value)
+            game.level.pop()
+            game.level.push(levelButton.value)
 
             switch (levelButton.value) {
                 case '1':
@@ -261,7 +345,7 @@ let startButton
 
 export function levelsEvent(param) {
     startButton.addEventListener('click', () => {
-        window.application.renderScreen('game')
+        game.renderScreen('game')
         console.log(`Уровень сложности ${param}`)
     })
 }
@@ -299,7 +383,7 @@ export function renderStartMenu() {
 
     app.appendChild(startMenuContainer)
 
-    window.application.renderBlock('menu-title', startMenuHeader)
-    window.application.renderBlock('level-button', startMenuLevel)
-    window.application.renderBlock('start-button', startMenuStart)
+    game.renderBlock('menu-title', startMenuHeader)
+    game.renderBlock('level-button', startMenuLevel)
+    game.renderBlock('start-button', startMenuStart)
 }
