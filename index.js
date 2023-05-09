@@ -78,10 +78,14 @@ function createCard(container, cardIndex) {
     card.classList.add('main-game-card')
     container.appendChild(card)
 
+    // const id = cards[i].replace('/img/', '')
     const front = document.createElement('img')
     front.classList.add('front-card')
     // front.src = `${game.cards[0][cardIndex]}`
+
     front.setAttribute('src', `${game.cards[0][cardIndex]}`)
+
+    // front.setAttribute('src', 'img/рубашка.png')
     card.appendChild(front)
 
     // const img = document.createElement('img')
@@ -92,23 +96,6 @@ function createCard(container, cardIndex) {
     const back = document.createElement('div')
     back.classList.add('back-card')
     card.appendChild(back)
-
-    // const front = document.createElement('div')
-    // front.classList.add('game-front')
-    // container.appendChild(front)
-
-    // const card = document.createElement('div')
-    // card.classList.add('game-front-card')
-    // front.appendChild(card)
-
-    // const img = document.createElement('img')
-    // // img.src = `${window.application.cards[0][cardIndex]}`
-    // img.src = `${game.cards[0][cardIndex]}`
-    // card.appendChild(img)
-
-    // const back = document.createElement('div')
-    // back.classList.add('game-back')
-    // card.appendChild(back)
 
     // Назначение обработчика клика на карточке
     card.addEventListener('click', handleCardClick)
@@ -129,14 +116,15 @@ function handleCardClick(event) {
     }
 
     // Получаем открытые карточки
-    const flippedCards = document.querySelectorAll('flipped')
+    // const flippedCards = document.querySelectorAll('flipped')
+    const flippedCards = document.querySelectorAll('.main-game-card.flipped')
 
     // Если открыто две карточки, сравниваем их
     // if (flippedCards.length === 2) {
     let hasFlippedCard = false
     let lockBoard = false
-    let firstCardImg = flippedCards[0].querySelector('front')
-    let secondCardImg = flippedCards[1].querySelector('front')
+    let firstCardImg = flippedCards[0].querySelector('.front-card')
+    let secondCardImg = flippedCards[1].querySelector('.front-card')
 
     function flipCard() {
         if (lockBoard) return
@@ -153,22 +141,22 @@ function handleCardClick(event) {
         secondCardImg = this
 
         checkForMatch()
-        // console.log('debug');
-        // Если выбраны две одинаковые карты, то они остаются открытыми,
-        // иначе закрываем обе карты
-        // if (firstCardImg.src === secondCardImg.src) {
-        //     flippedCards.forEach((card) => card.classList.remove('flipped'))
-        // } else {
-        //     setTimeout(() => {
-        //         flippedCards.forEach((card) => card.classList.remove('flipped'))
-        //     }, 1000)
-        // }
     }
 
-    function checkForMatch() {
-        let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
-        isMatch ? disableCards() : unflipCards()
+    function checkForMatch(firstCardImg, secondCardImg) {
+        if (firstCardImg.src === secondCardImg.src) {
+            firstCardImg.parentElement.classList.add('matched')
+            secondCardImg.parentElement.classList.add('matched')
+        } else {
+            firstCardImg.parentElement.classList.remove('flipped')
+            secondCardImg.parentElement.classList.remove('flipped')
+        }
     }
+
+    // function checkForMatch() {
+    //     let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
+    //     isMatch ? disableCards() : unflipCards()
+    // }
 
     function disableCards() {
         firstCardImg.removeEventListener('click', flipCard)
@@ -202,7 +190,7 @@ function renderGameZone1(container) {
         const cardIndex = Math.round(Math.random() * 8)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('.front-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -214,7 +202,7 @@ function renderGameZone2(container) {
         const cardIndex = Math.round(Math.random() * 12)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('.front-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -226,7 +214,7 @@ function renderGameZone3(container) {
         const cardIndex = Math.round(Math.random() * 16)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('front').src = 'img/рубашка.png'
+            card.querySelector('.front-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
