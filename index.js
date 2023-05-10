@@ -78,23 +78,19 @@ function createCard(container, cardIndex) {
     card.classList.add('main-game-card')
     container.appendChild(card)
 
-    // const id = cards[i].replace('/img/', '')
     const front = document.createElement('img')
     front.classList.add('front-card')
     // front.src = `${game.cards[0][cardIndex]}`
-
     front.setAttribute('src', `${game.cards[0][cardIndex]}`)
-
-    // front.setAttribute('src', 'img/рубашка.png')
+    // back.setAttribute('src', 'img/рубашка.png')
     card.appendChild(front)
 
-    // const img = document.createElement('img')
-    // // img.src = `${window.application.cards[0][cardIndex]}`
+    // img.src = `${window.application.cards[0][cardIndex]}`
     // img.src = `${game.cards[0][cardIndex]}`
-    // card.appendChild(img)
 
-    const back = document.createElement('div')
+    const back = document.createElement('img')
     back.classList.add('back-card')
+    back.setAttribute('src', 'img/рубашка.png')
     card.appendChild(back)
 
     // Назначение обработчика клика на карточке
@@ -107,6 +103,10 @@ function handleCardClick(event) {
     const card = event.currentTarget
     const cards = document.querySelectorAll('.main-game-card')
 
+    // Получаем открытые карточки
+    // const flippedCards = document.querySelectorAll('flipped')
+    const flippedCards = document.querySelectorAll('.main-game-card.flipped')
+
     // Открываем карточку
     card.classList.add('flipped')
 
@@ -115,16 +115,12 @@ function handleCardClick(event) {
         return
     }
 
-    // Получаем открытые карточки
-    // const flippedCards = document.querySelectorAll('flipped')
-    const flippedCards = document.querySelectorAll('.main-game-card.flipped')
-
     // Если открыто две карточки, сравниваем их
     // if (flippedCards.length === 2) {
     let hasFlippedCard = false
     let lockBoard = false
-    let firstCardImg = flippedCards[0].querySelector('.front-card')
-    let secondCardImg = flippedCards[1].querySelector('.front-card')
+    let firstCardImg = flippedCards[0].querySelector('.back-card')
+    let secondCardImg = flippedCards[1].querySelector('.back-card')
 
     function flipCard() {
         if (lockBoard) return
@@ -190,7 +186,7 @@ function renderGameZone1(container) {
         const cardIndex = Math.round(Math.random() * 8)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('.front-card').src = 'img/рубашка.png'
+            card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -202,7 +198,7 @@ function renderGameZone2(container) {
         const cardIndex = Math.round(Math.random() * 12)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('.front-card').src = 'img/рубашка.png'
+            card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -214,7 +210,7 @@ function renderGameZone3(container) {
         const cardIndex = Math.round(Math.random() * 16)
         const card = createCard(container, cardIndex)
         intervalId = setTimeout(() => {
-            card.querySelector('.front-card').src = 'img/рубашка.png'
+            card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
         }, gameDelay)
@@ -353,6 +349,7 @@ function renderGameScreen() {
 // window.application.screens['game'] = renderGameScreen
 game.screens['game'] = renderGameScreen
 
+// уровни
 function renderLevelsButton(container) {
     for (let i = 1; i <= 3; i++) {
         const levelButton = document.createElement('input')
