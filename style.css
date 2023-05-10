@@ -156,6 +156,10 @@ body {
     transform: rotateY(180deg);
 }
 
+.matched {
+    opacity: .8;
+}
+
 .timer {
     display: flex;
     align-items: center;

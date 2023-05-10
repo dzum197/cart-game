@@ -102,47 +102,44 @@ function createCard(container, cardIndex) {
     return card
 }
 
+let hasFlippedCard = false
+let lockBoard = false
+let firstCardImg = null
+let secondCardImg = null
+
 function handleCardClick(event) {
     const card = event.currentTarget
-    console.log(card)
-    const cards = document.querySelectorAll('.main-game-card')
 
-    // Получаем открытые карточки
-    // const flippedCards = document.querySelectorAll('flipped')
-    const flippedCards = document.querySelectorAll('.main-game-card.flipped')
-
-    // Если карточка уже открыта, ничего не делаем
     if (card.classList.contains('flipped')) {
         return
     }
 
-    // Если открыто две карточки, сравниваем их
-    // if (flippedCards.length === 2) {
-    let hasFlippedCard = false
-    let lockBoard = false
-    let firstCardImg = flippedCards[0].querySelector('.back-card')
-    let secondCardImg = flippedCards[1].querySelector('.back-card')
+    flipCard(card)
 
-    function flipCard() {
+    function flipCard(card) {
+        const cardImg = card.querySelector('.front-card')
+
         if (lockBoard) return
-        if (this === firstCardImg) return
+        if (card.classList.contains('matched')) return
+        if (cardImg === firstCardImg) return
 
-        this.classList.add('flipped')
+        card.classList.add('flipped')
 
         if (!hasFlippedCard) {
             hasFlippedCard = true
-            firstCardImg = this
+            firstCardImg = cardImg
             return
         }
 
-        secondCardImg = this
+        secondCardImg = cardImg
+        lockBoard = true
 
-        checkForMatch()
-        // disableCards()
-        // unflipCards()
+        setTimeout(() => {
+            checkForMatch()
+        }, 800)
     }
 
-    function checkForMatch(firstCardImg, secondCardImg) {
+    function checkForMatch() {
         if (firstCardImg.src === secondCardImg.src) {
             firstCardImg.parentElement.classList.add('matched')
             secondCardImg.parentElement.classList.add('matched')
@@ -150,6 +147,11 @@ function handleCardClick(event) {
             firstCardImg.parentElement.classList.remove('flipped')
             secondCardImg.parentElement.classList.remove('flipped')
         }
+
+        lockBoard = false
+        hasFlippedCard = false
+        firstCardImg = null
+        secondCardImg = null
     }
 
     // function checkForMatch() {
@@ -180,8 +182,6 @@ function handleCardClick(event) {
             (firstCardImg, secondCardImg)
         ] = [null, null]
     }
-    cards.forEach((card) => card.addEventListener('click', flipCard))
-    // }
 }
 
 function renderGameZone1(container) {
