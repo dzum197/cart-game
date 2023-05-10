@@ -133,10 +133,7 @@ body {
 .main-game-card {
     width: 95px;
     height: 133px;
-    background: #fff;
     border-radius: 4px;
-    transition: transform 0.5s;
-    transform-style: preserve-3d;
     position: relative;
 }
 
@@ -147,10 +144,15 @@ body {
     /* padding: 20px; */
     position: absolute;
     border-radius: 4px;
+    transition: 1s;
     backface-visibility: hidden;
 }
 
-.flipped {
+.flipped .front-card {
+    transform: rotateY(360deg);
+}
+
+.flipped .back-card {
     transform: rotateY(180deg);
 }
 

@@ -93,6 +93,9 @@ function createCard(container, cardIndex) {
     back.setAttribute('src', 'img/рубашка.png')
     card.appendChild(back)
 
+    // Открываем карточку
+    card.classList.add('flipped')
+
     // Назначение обработчика клика на карточке
     card.addEventListener('click', handleCardClick)
 
@@ -101,14 +104,12 @@ function createCard(container, cardIndex) {
 
 function handleCardClick(event) {
     const card = event.currentTarget
+    console.log(card)
     const cards = document.querySelectorAll('.main-game-card')
 
     // Получаем открытые карточки
     // const flippedCards = document.querySelectorAll('flipped')
     const flippedCards = document.querySelectorAll('.main-game-card.flipped')
-
-    // Открываем карточку
-    card.classList.add('flipped')
 
     // Если карточка уже открыта, ничего не делаем
     if (card.classList.contains('flipped')) {
@@ -137,6 +138,8 @@ function handleCardClick(event) {
         secondCardImg = this
 
         checkForMatch()
+        // disableCards()
+        // unflipCards()
     }
 
     function checkForMatch(firstCardImg, secondCardImg) {
@@ -189,6 +192,7 @@ function renderGameZone1(container) {
             card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
+            card.classList.remove('flipped')
         }, gameDelay)
     }
 }
@@ -201,6 +205,7 @@ function renderGameZone2(container) {
             card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
+            card.classList.remove('flipped')
         }, gameDelay)
     }
 }
@@ -213,6 +218,7 @@ function renderGameZone3(container) {
             card.querySelector('.back-card').src = 'img/рубашка.png'
             clearInterval(interval)
             interval = setInterval(startTimer, 10)
+            card.classList.remove('flipped')
         }, gameDelay)
     }
 }
