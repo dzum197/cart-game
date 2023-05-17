@@ -1,3 +1,4 @@
+import { replace } from 'lodash'
 import './style.css'
 
 const app = document.querySelector('.app')
@@ -10,44 +11,42 @@ const game = {
     timers: [],
     level: [],
     cards: [
-        [
-            './img/10бубны.png',
-            './img/10крести.png',
-            './img/10пики.png',
-            './img/10черви.png',
-            './img/6бубны.png',
-            './img/6крести.png',
-            './img/6пики.png',
-            './img/6черви.png',
-            './img/7бубны.png',
-            './img/7крести.png',
-            './img/7пики.png',
-            './img/7черви.png',
-            './img/8бубны.png',
-            './img/8крести.png',
-            './img/8пики.png',
-            './img/8черви.png',
-            './img/9бубны.png',
-            './img/9крести.png',
-            './img/9пики.png',
-            './img/9черви.png',
-            './img/валетБубны.png',
-            './img/валетКрести.png',
-            './img/валетПики.png',
-            './img/валетЧерви.png',
-            './img/дамаБубны.png',
-            './img/дамаКрести.png',
-            './img/дамаПики.png',
-            './img/дамаЧерви.png',
-            './img/корольБубны.png',
-            './img/корольКрести.png',
-            './img/корольПики.png',
-            './img/корольЧерви.png',
-            './img/тузБубны.png',
-            './img/тузКрести.png',
-            './img/тузПики.png',
-            './img/тузЧерви.png',
-        ],
+        './img/10бубны.png',
+        './img/10крести.png',
+        './img/10пики.png',
+        './img/10черви.png',
+        './img/6бубны.png',
+        './img/6крести.png',
+        './img/6пики.png',
+        './img/6черви.png',
+        './img/7бубны.png',
+        './img/7крести.png',
+        './img/7пики.png',
+        './img/7черви.png',
+        './img/8бубны.png',
+        './img/8крести.png',
+        './img/8пики.png',
+        './img/8черви.png',
+        './img/9бубны.png',
+        './img/9крести.png',
+        './img/9пики.png',
+        './img/9черви.png',
+        './img/валетБубны.png',
+        './img/валетКрести.png',
+        './img/валетПики.png',
+        './img/валетЧерви.png',
+        './img/дамаБубны.png',
+        './img/дамаКрести.png',
+        './img/дамаПики.png',
+        './img/дамаЧерви.png',
+        './img/корольБубны.png',
+        './img/корольКрести.png',
+        './img/корольПики.png',
+        './img/корольЧерви.png',
+        './img/тузБубны.png',
+        './img/тузКрести.png',
+        './img/тузПики.png',
+        './img/тузЧерви.png',
     ],
 
     renderScreen: function (screenName) {
@@ -73,6 +72,7 @@ const game = {
 let intervalId
 const gameDelay = 5000
 
+// функция создания карточки
 function createCard(container, cardIndex) {
     const card = document.createElement('div')
     card.classList.add('main-game-card')
@@ -107,6 +107,7 @@ let lockBoard = false
 let firstCardImg = null
 let secondCardImg = null
 
+// функция переворота карточки
 function handleCardClick(event) {
     const card = event.currentTarget
 
@@ -143,83 +144,32 @@ function handleCardClick(event) {
         if (firstCardImg.src === secondCardImg.src) {
             firstCardImg.parentElement.classList.add('matched')
             secondCardImg.parentElement.classList.add('matched')
+            // alert('Вы выиграли!')
         } else {
             firstCardImg.parentElement.classList.remove('flipped')
             secondCardImg.parentElement.classList.remove('flipped')
+
+            clearInterval(interval)
+            alert('Вы проиграли!')
+            sec = 0
         }
 
         lockBoard = false
         hasFlippedCard = false
         firstCardImg = null
         secondCardImg = null
-    }
 
-    // function checkForMatch() {
-    //     let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
-    //     isMatch ? disableCards() : unflipCards()
-    // }
+        // function checkForMatch() {
+        //     let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
+        //     isMatch ? disableCards() : unflipCards()
+        // }
 
-    function disableCards() {
-        firstCardImg.removeEventListener('click', flipCard)
-        secondCardImg.removeEventListener('click', flipCard)
+        // function disableCards() {
+        //     firstCardImg.removeEventListener('click', flipCard)
+        //     secondCardImg.removeEventListener('click', flipCard)
 
-        resetBoard()
-    }
-
-    function unflipCards() {
-        lockBoard = true
-
-        setTimeout(() => {
-            firstCardImg.classList.remove('flipped')
-            secondCardImg.classList.remove('flipped')
-
-            lockBoard = false
-        }, 1500)
-    }
-
-    function resetBoard() {
-        ;[hasFlippedCard, lockBoard] = [false, false][
-            (firstCardImg, secondCardImg)
-        ] = [null, null]
-    }
-}
-
-function renderGameZone1(container) {
-    for (let i = 1; i <= 8; i++) {
-        const cardIndex = Math.round(Math.random() * 8)
-        const card = createCard(container, cardIndex)
-        intervalId = setTimeout(() => {
-            card.querySelector('.back-card').src = 'img/рубашка.png'
-            clearInterval(interval)
-            interval = setInterval(startTimer, 10)
-            card.classList.remove('flipped')
-        }, gameDelay)
-    }
-}
-
-function renderGameZone2(container) {
-    for (let i = 1; i <= 12; i++) {
-        const cardIndex = Math.round(Math.random() * 12)
-        const card = createCard(container, cardIndex)
-        intervalId = setTimeout(() => {
-            card.querySelector('.back-card').src = 'img/рубашка.png'
-            clearInterval(interval)
-            interval = setInterval(startTimer, 10)
-            card.classList.remove('flipped')
-        }, gameDelay)
-    }
-}
-
-function renderGameZone3(container) {
-    for (let i = 1; i <= 16; i++) {
-        const cardIndex = Math.round(Math.random() * 16)
-        const card = createCard(container, cardIndex)
-        intervalId = setTimeout(() => {
-            card.querySelector('.back-card').src = 'img/рубашка.png'
-            clearInterval(interval)
-            interval = setInterval(startTimer, 10)
-            card.classList.remove('flipped')
-        }, gameDelay)
+        //     resetBoard()
+        // }
     }
 }
 
@@ -243,6 +193,140 @@ function levelDifficulty() {
         default:
             break
     }
+}
+
+// shuffle(array: string[])
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]]
+    }
+    return array
+}
+
+// генерация количества карточек в соответствии с уровнем сложности
+function renderGameZone1(container) {
+    const cardsArr = shuffle(game.cards[0])
+    const cardField = []
+
+    for (let i = 0; i < 3; i++) {
+        cardField.push(cardsArr[i])
+    }
+
+    cardField.forEach((el) => {
+        cardField.push(el)
+    })
+
+    shuffle(cardField)
+    cardField.forEach((el) => {
+        const card = document.createElement('div')
+        card.classList.add('main-game-card')
+        container.appendChild(card)
+
+        const front = document.createElement('img')
+        front.classList.add('front-card')
+        front.setAttribute('src', el)
+        card.appendChild(front)
+
+        const back = document.createElement('img')
+        back.classList.add('back-card')
+        back.setAttribute('src', 'img/рубашка.png')
+        card.appendChild(back)
+
+        card.classList.add('flipped')
+
+        card.addEventListener('click', handleCardClick)
+    })
+    setTimeout(() => {
+        const cards = document.querySelectorAll('.flipped')
+        cards.forEach((el) => {
+            el.classList.remove('flipped')
+        })
+        interval = setInterval(startTimer, 1000)
+    }, 5000)
+}
+
+function renderGameZone2(container) {
+    const cardsArr = shuffle(game.cards[0])
+    const cardField = []
+
+    for (let i = 0; i < 6; i++) {
+        cardField.push(cardsArr[i])
+    }
+
+    cardField.forEach((el) => {
+        cardField.push(el)
+    })
+
+    shuffle(cardField)
+    cardField.forEach((el) => {
+        const card = document.createElement('div')
+        card.classList.add('main-game-card')
+        container.appendChild(card)
+
+        const front = document.createElement('img')
+        front.classList.add('front-card')
+        front.setAttribute('src', el)
+        card.appendChild(front)
+
+        const back = document.createElement('img')
+        back.classList.add('back-card')
+        back.setAttribute('src', 'img/рубашка.png')
+        card.appendChild(back)
+
+        card.classList.add('flipped')
+
+        card.addEventListener('click', handleCardClick)
+    })
+    setTimeout(() => {
+        const cards = document.querySelectorAll('.flipped')
+        cards.forEach((el) => {
+            el.classList.remove('flipped')
+        })
+        interval = setInterval(startTimer, 1000)
+    }, 5000)
+}
+
+function renderGameZone3(container) {
+    const cardsArr = shuffle(game.cards[0])
+    const cardField = []
+
+    for (let i = 0; i < 9; i++) {
+        cardField.push(cardsArr[i])
+    }
+
+    cardField.forEach((el) => {
+        cardField.push(el)
+    })
+
+    shuffle(cardField)
+    cardField.forEach((el) => {
+        const card = document.createElement('div')
+        card.classList.add('main-game-card')
+        container.appendChild(card)
+
+        const front = document.createElement('img')
+        front.classList.add('front-card')
+        front.setAttribute('src', el)
+        card.appendChild(front)
+
+        const back = document.createElement('img')
+        back.classList.add('back-card')
+        back.setAttribute('src', 'img/рубашка.png')
+        card.appendChild(back)
+
+        card.classList.add('flipped')
+
+        card.addEventListener('click', handleCardClick)
+    })
+    setTimeout(() => {
+        const cards = document.querySelectorAll('.flipped')
+        cards.forEach((el) => {
+            el.classList.remove('flipped')
+        })
+        interval = setInterval(startTimer, 1000)
+    }, 5000)
 }
 
 function renderAgainButton(container) {
@@ -287,21 +371,26 @@ let second = 0,
 function startTimer() {
     let milElem = document.querySelector('.timer-mil')
     let secElem = document.querySelector('.timer-sec')
+    // console.log(mil)
 
     mil++
     if (mil < 9) {
         milElem.textContent = '0' + mil
     }
 
-    if (mil > 9) {
+    if (mil >= 10) {
         milElem.textContent = mil
     }
 
-    if (mil > 99) {
+    if (mil > 59) {
         second++
         secElem.textContent = '0' + second
         mil = 0
         milElem.textContent = '0' + mil
+
+        clearInterval(interval)
+        alert('Вы проиграли!')
+        sec = 0
     }
 
     // секунды
@@ -311,14 +400,13 @@ function startTimer() {
     if (second > 9) {
         secElem.textContent = second
     }
-    if (second > 59 || mil > 99) {
-        clearInterval(interval)
-        alert('Вы проиграли!')
-        sec = 0
-        mil = 0
+    // if (second > 59) {
+    //     clearInterval(interval)
+    //     alert('Вы проиграли!')
+    //     sec = 0
 
-        // Экран поражения
-    }
+    //     // Экран поражения
+    // }
 }
 
 game.blocks['again-button'] = renderAgainButton
