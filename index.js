@@ -107,7 +107,28 @@ let lockBoard = false
 let firstCardImg = null
 let secondCardImg = null
 
-// функция переворота карточки
+let successfulPairs = 0 // количество успешных пар
+
+const levelSelect = document.querySelector('#level-select')
+let selectedLevel = levelSelect.value
+
+levelSelect.addEventListener('change', (event) => {
+    selectedLevel = event.target.value
+    numberOfPairs = getNumberOfPairs(selectedLevel)
+})
+
+let numberOfPairs = getNumberOfPairs(selectedLevel) // количество пар для выбранного уровня сложности
+
+function getNumberOfPairs(level) {
+    if (level === 'easy') {
+        return 3
+    } else if (level === 'medium') {
+        return 6
+    } else if (level === 'hard') {
+        return 9
+    }
+}
+
 function handleCardClick(event) {
     const card = event.currentTarget
 
@@ -144,11 +165,13 @@ function handleCardClick(event) {
         if (firstCardImg.src === secondCardImg.src) {
             firstCardImg.parentElement.classList.add('matched')
             secondCardImg.parentElement.classList.add('matched')
-            // alert('Вы выиграли!')
+            successfulPairs += 1
+            if (successfulPairs === numberOfPairs) {
+                alert('Поздравляем, вы победили!')
+            }
         } else {
             firstCardImg.parentElement.classList.remove('flipped')
             secondCardImg.parentElement.classList.remove('flipped')
-
             clearInterval(interval)
             alert('Вы проиграли!')
             sec = 0
@@ -158,18 +181,6 @@ function handleCardClick(event) {
         hasFlippedCard = false
         firstCardImg = null
         secondCardImg = null
-
-        // function checkForMatch() {
-        //     let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
-        //     isMatch ? disableCards() : unflipCards()
-        // }
-
-        // function disableCards() {
-        //     firstCardImg.removeEventListener('click', flipCard)
-        //     secondCardImg.removeEventListener('click', flipCard)
-
-        //     resetBoard()
-        // }
     }
 }
 

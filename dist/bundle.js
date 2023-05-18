@@ -17438,7 +17438,28 @@ let lockBoard = false
 let firstCardImg = null
 let secondCardImg = null
 
-// функция переворота карточки
+let successfulPairs = 0 // количество успешных пар
+
+const levelSelect = document.querySelector('#level-select')
+let selectedLevel = levelSelect.value
+
+levelSelect.addEventListener('change', (event) => {
+    selectedLevel = event.target.value
+    numberOfPairs = getNumberOfPairs(selectedLevel)
+})
+
+let numberOfPairs = getNumberOfPairs(selectedLevel) // количество пар для выбранного уровня сложности
+
+function getNumberOfPairs(level) {
+    if (level === 'easy') {
+        return 3
+    } else if (level === 'medium') {
+        return 6
+    } else if (level === 'hard') {
+        return 9
+    }
+}
+
 function handleCardClick(event) {
     const card = event.currentTarget
 
@@ -17475,9 +17496,16 @@ function handleCardClick(event) {
         if (firstCardImg.src === secondCardImg.src) {
             firstCardImg.parentElement.classList.add('matched')
             secondCardImg.parentElement.classList.add('matched')
+            successfulPairs += 1
+            if (successfulPairs === numberOfPairs) {
+                alert('Поздравляем, вы победили!')
+            }
         } else {
             firstCardImg.parentElement.classList.remove('flipped')
             secondCardImg.parentElement.classList.remove('flipped')
+            clearInterval(interval)
+            alert('Вы проиграли!')
+            sec = 0
         }
 
         lockBoard = false
@@ -17485,34 +17513,27 @@ function handleCardClick(event) {
         firstCardImg = null
         secondCardImg = null
     }
+}
 
-    // function checkForMatch() {
-    //     let isMatch = firstCardImg.dataset.name === secondCardImg.dataset.name
-    //     isMatch ? disableCards() : unflipCards()
-    // }
+function levelDifficulty() {
+    // const level = window.application.level[window.application.level.length - 1]
+    const level = game.level[game.level.length - 1]
 
-    function disableCards() {
-        firstCardImg.removeEventListener('click', flipCard)
-        secondCardImg.removeEventListener('click', flipCard)
+    switch (level) {
+        case '1':
+            game.blocks['game-card'] = renderGameZone1
+            break
 
-        resetBoard()
-    }
+        case '2':
+            game.blocks['game-card'] = renderGameZone2
+            break
 
-    function unflipCards() {
-        lockBoard = true
+        case '3':
+            game.blocks['game-card'] = renderGameZone3
+            break
 
-        setTimeout(() => {
-            firstCardImg.classList.remove('flipped')
-            secondCardImg.classList.remove('flipped')
-
-            lockBoard = false
-        }, 1500)
-    }
-
-    function resetBoard() {
-        ;[hasFlippedCard, lockBoard] = [false, false][
-            (firstCardImg, secondCardImg)
-        ] = [null, null]
+        default:
+            break
     }
 }
 
@@ -17527,10 +17548,6 @@ function shuffle(array) {
 }
 
 // генерация количества карточек в соответствии с уровнем сложности
-// function renderGameZone(container) {
-//     const cardField = []
-// }
-
 function renderGameZone1(container) {
     const cardsArr = shuffle(game.cards[0])
     const cardField = []
@@ -17654,28 +17671,6 @@ function renderGameZone3(container) {
     }, 5000)
 }
 
-function levelDifficulty() {
-    // const level = window.application.level[window.application.level.length - 1]
-    const level = game.level[game.level.length - 1]
-
-    switch (level) {
-        case '1':
-            game.blocks['game-card'] = renderGameZone1
-            break
-
-        case '2':
-            game.blocks['game-card'] = renderGameZone2
-            break
-
-        case '3':
-            game.blocks['game-card'] = renderGameZone3
-            break
-
-        default:
-            break
-    }
-}
-
 function renderAgainButton(container) {
     const againButton = document.createElement('button')
     againButton.classList.add('level-footer-button')
@@ -17718,7 +17713,7 @@ let second = 0,
 function startTimer() {
     let milElem = document.querySelector('.timer-mil')
     let secElem = document.querySelector('.timer-sec')
-    console.log(mil)
+    // console.log(mil)
 
     mil++
     if (mil < 9) {
@@ -17734,6 +17729,10 @@ function startTimer() {
         secElem.textContent = '0' + second
         mil = 0
         milElem.textContent = '0' + mil
+
+        clearInterval(interval)
+        alert('Вы проиграли!')
+        sec = 0
     }
 
     // секунды
@@ -17743,14 +17742,13 @@ function startTimer() {
     if (second > 9) {
         secElem.textContent = second
     }
-    if (second > 59 || mil > 99) {
-        clearInterval(interval)
-        alert('Вы проиграли!')
-        sec = 0
-        mil = 0
+    // if (second > 59) {
+    //     clearInterval(interval)
+    //     alert('Вы проиграли!')
+    //     sec = 0
 
-        // Экран поражения
-    }
+    //     // Экран поражения
+    // }
 }
 
 game.blocks['again-button'] = renderAgainButton
