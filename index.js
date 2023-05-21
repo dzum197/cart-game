@@ -10,7 +10,8 @@ const game = {
     screens: {},
     timers: [],
     level: [],
-    levelSelected: '',
+    // levelSelected: '',
+    successfulPairs: 0,
     cards: [
         './img/10бубны.png',
         './img/10крести.png',
@@ -163,19 +164,13 @@ function flipCard(card) {
     }, 800)
 }
 
-successfulPairs += 1
-if (successfulPairs === numberOfPairs) {
-    alert('Поздравляем, вы победили!')
-}
-
 function checkForMatch() {
     if (firstCardImg.src === secondCardImg.src) {
         firstCardImg.parentElement.classList.add('matched')
         secondCardImg.parentElement.classList.add('matched')
         // добавить их в массив successfulCards
-        let successfulCards = []
-        successfulCards.push(firstCardImg)
-        successfulCards.push(secondCardImg)
+        // successfulCards.push(firstCardImg)
+        // successfulCards.push(secondCardImg)
     } else {
         firstCardImg.parentElement.classList.remove('flipped')
         secondCardImg.parentElement.classList.remove('flipped')
@@ -190,33 +185,40 @@ function checkForMatch() {
     secondCardImg = null
 }
 
-// получение уровней сложности из localStorage
-function saveDifficulty(difficulty) {
-    localStorage.setItem('difficulty', difficulty)
+// successfulPairs += 1
+game.successfulPairs++
+
+if (successfulPairs === numberOfPairs) {
+    alert('Поздравляем, вы победили!')
 }
 
-function getDifficulty() {
-    return localStorage.getItem('difficulty') || 'defaultDifficulty'
-}
+// // получение уровней сложности из localStorage
+// function saveDifficulty(difficulty) {
+//     localStorage.setItem('difficulty', difficulty)
+// }
 
-saveDifficulty()
+// function getDifficulty() {
+//     return localStorage.getItem('difficulty') || 'defaultDifficulty'
+// }
 
-// получить сохраненный уровень сложности
-const currentDifficulty = getDifficulty()
+// saveDifficulty()
 
-function saveSelectedPairs(selectedPairs) {
-    localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs))
-}
+// // получить сохраненный уровень сложности
+// const currentDifficulty = getDifficulty()
 
-function getSelectedPairs() {
-    const selectedPairs = localStorage.getItem('selectedPairs')
-    return selectedPairs ? JSON.parse(selectedPairs) : []
-}
+// function saveSelectedPairs(selectedPairs) {
+//     localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs))
+// }
 
-saveSelectedPairs([])
+// function getSelectedPairs() {
+//     const selectedPairs = localStorage.getItem('selectedPairs')
+//     return selectedPairs ? JSON.parse(selectedPairs) : []
+// }
 
-// получение сохраненных пар
-const currentSelectedPairs = getSelectedPairs()
+// saveSelectedPairs([])
+
+// // получение сохраненных пар
+// const currentSelectedPairs = getSelectedPairs()
 
 function levelDifficulty() {
     // const level = window.application.level[window.application.level.length - 1]
