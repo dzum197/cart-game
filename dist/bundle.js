@@ -17341,6 +17341,7 @@ const game = {
     screens: {},
     timers: [],
     level: [],
+    levelSelected: '',
     cards: [
         './img/10бубны.png',
         './img/10крести.png',
@@ -17438,17 +17439,17 @@ let lockBoard = false
 let firstCardImg = null
 let secondCardImg = null
 
-let successfulPairs = 0 // количество успешных пар
+// let successfulPairs = 0 // количество успешных пар
 
-const levelSelect = document.querySelector('#level-select')
-let selectedLevel = levelSelect.value
+// const levelSelect = game.levelSelected
+// let selectedLevel = levelSelect.value
 
-levelSelect.addEventListener('change', (event) => {
-    selectedLevel = event.target.value
-    numberOfPairs = getNumberOfPairs(selectedLevel)
-})
+// levelSelect.addEventListener('change', (event) => {
+//     selectedLevel = event.target.value
+//     numberOfPairs = getNumberOfPairs(selectedLevel)
+// })
 
-let numberOfPairs = getNumberOfPairs(selectedLevel) // количество пар для выбранного уровня сложности
+// let numberOfPairs = getNumberOfPairs(selectedLevel) // количество пар для выбранного уровня сложности
 
 function getNumberOfPairs(level) {
     if (level === 'easy') {
@@ -17468,52 +17469,80 @@ function handleCardClick(event) {
     }
 
     flipCard(card)
-
-    function flipCard(card) {
-        const cardImg = card.querySelector('.front-card')
-
-        if (lockBoard) return
-        if (card.classList.contains('matched')) return
-        if (cardImg === firstCardImg) return
-
-        card.classList.add('flipped')
-
-        if (!hasFlippedCard) {
-            hasFlippedCard = true
-            firstCardImg = cardImg
-            return
-        }
-
-        secondCardImg = cardImg
-        lockBoard = true
-
-        setTimeout(() => {
-            checkForMatch()
-        }, 800)
-    }
-
-    function checkForMatch() {
-        if (firstCardImg.src === secondCardImg.src) {
-            firstCardImg.parentElement.classList.add('matched')
-            secondCardImg.parentElement.classList.add('matched')
-            successfulPairs += 1
-            if (successfulPairs === numberOfPairs) {
-                alert('Поздравляем, вы победили!')
-            }
-        } else {
-            firstCardImg.parentElement.classList.remove('flipped')
-            secondCardImg.parentElement.classList.remove('flipped')
-            clearInterval(interval)
-            alert('Вы проиграли!')
-            sec = 0
-        }
-
-        lockBoard = false
-        hasFlippedCard = false
-        firstCardImg = null
-        secondCardImg = null
-    }
 }
+
+function flipCard(card) {
+    const cardImg = card.querySelector('.front-card')
+
+    if (lockBoard) return
+    if (card.classList.contains('matched')) return
+    if (cardImg === firstCardImg) return
+
+    card.classList.add('flipped')
+
+    if (!hasFlippedCard) {
+        hasFlippedCard = true
+        firstCardImg = cardImg
+        return
+    }
+
+    secondCardImg = cardImg
+    lockBoard = true
+
+    setTimeout(() => {
+        checkForMatch()
+    }, 800)
+}
+
+function checkForMatch() {
+    if (firstCardImg.src === secondCardImg.src) {
+        firstCardImg.parentElement.classList.add('matched')
+        secondCardImg.parentElement.classList.add('matched')
+        // successfulPairs += 1
+        // if (successfulPairs === numberOfPairs) {
+        //     alert('Поздравляем, вы победили!')
+        // }
+    } else {
+        firstCardImg.parentElement.classList.remove('flipped')
+        secondCardImg.parentElement.classList.remove('flipped')
+        clearInterval(interval)
+        alert('Вы проиграли!')
+        sec = 0
+    }
+
+    lockBoard = false
+    hasFlippedCard = false
+    firstCardImg = null
+    secondCardImg = null
+}
+
+// получение уровней сложности из localStorage
+function saveDifficulty(difficulty) {
+    localStorage.setItem('difficulty', difficulty)
+}
+
+function getDifficulty() {
+    return localStorage.getItem('difficulty') || 'defaultDifficulty'
+}
+
+saveDifficulty()
+
+// Затем, когда вы хотите получить сохраненный уровень сложности
+const currentDifficulty = getDifficulty() // Вернет "hard" или значение по умолчанию, если не установлено
+
+function saveSelectedPairs(selectedPairs) {
+    localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs))
+}
+
+function getSelectedPairs() {
+    const selectedPairs = localStorage.getItem('selectedPairs')
+    return selectedPairs ? JSON.parse(selectedPairs) : []
+}
+
+saveSelectedPairs([])
+
+// Затем, когда вы хотите получить сохраненные пары
+const currentSelectedPairs = getSelectedPairs() // Вернет массив
 
 function levelDifficulty() {
     // const level = window.application.level[window.application.level.length - 1]
