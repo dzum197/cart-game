@@ -10,7 +10,7 @@ const game = {
     screens: {},
     timers: [],
     level: [],
-    // levelSelected: '',
+    levelSelected: '',
     successfulPairs: 0,
     cards: [
         './img/10бубны.png',
