@@ -27,6 +27,11 @@ module.exports = {
                 type: 'asset/resource',
             },
             {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.js$/,
                 enforce: 'pre',
                 use: ['source-map-loader'],
