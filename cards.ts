@@ -37,7 +37,7 @@ let cards = [
     './img/тузЧерви.png',
 ]
 
-const cardObj = {}
+const cardObj: {[index: number]: string} = {}
 
 for (let i = 0; i < cards.length; i++) {
     cardObj[i] = cards[i]

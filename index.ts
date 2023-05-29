@@ -19,12 +19,12 @@ interface IGame {
     level: any //
     levelSelected: string
     successfulPairs: number
-    cards: string[]
+    cards: Array<string>
     renderScreen: (screenName: string) => void
     renderBlock: (blockName: string, container: HTMLElement) => void
 }
 
-let app: HTMLElement | null = null
+let app = document.querySelector('.app') as HTMLElement
 
 const game: IGame = {
     blocks: {},
@@ -127,8 +127,7 @@ function createCard(container: HTMLElement, cardIndex: number) {
 
 let hasFlippedCard = false
 let lockBoard = false
-let firstCardImg: Element | null = null
-let secondCardImg: Element | null = null
+let firstCardImg: HTMLImageElement, secondCardImg: HTMLImageElement
 // let firstCardImg = null
 // let secondCardImg = null
 
@@ -168,7 +167,7 @@ function flipCard(card: HTMLElement) {
     // let firstCardImg: HTMLImageElement | null = null
     // let secondCardImg: HTMLImageElement | null = null
 
-    const cardImg = card.querySelector('.front-card')
+    const cardImg = card.querySelector('.front-card') as HTMLImageElement
 
     if (lockBoard) return
     if (card.classList.contains('matched')) return
@@ -193,12 +192,16 @@ function flipCard(card: HTMLElement) {
 // проверка на совпадение карт
 function checkForMatch() {
     if (firstCardImg.src === secondCardImg.src) {
-        firstCardImg.parentElement.classList.add('matched')
-        secondCardImg.parentElement.classList.add('matched')
+        firstCardImg.parentElement!.classList.add('matched')
+        secondCardImg.parentElement!.classList.add('matched')
         game.successfulPairs++
         if (game.successfulPairs === Number(game.level) * 3) {
-            const min = Number(document.querySelector('.timer-sec').textContent)
-            const sec = Number(document.querySelector('.timer-mil').textContent)
+            const min = Number(
+                document.querySelector('.timer-sec')!.textContent
+            )
+            const sec = Number(
+                document.querySelector('.timer-mil')!.textContent
+            )
             console.log(sec, min)
 
             const timeString = min
@@ -207,8 +210,8 @@ function checkForMatch() {
             alert(`Поздравляем, вы победили! Затраченное время ${timeString}`)
         }
     } else {
-        firstCardImg.parentElement.classList.remove('flipped')
-        secondCardImg.parentElement.classList.remove('flipped')
+        firstCardImg.parentElement!.classList.remove('flipped')
+        secondCardImg.parentElement!.classList.remove('flipped')
         clearInterval(interval)
         alert('Вы проиграли!')
         sec = 0
@@ -258,7 +261,7 @@ function shuffle(array: string[]) {
 
 // генерация количества карточек в соответствии с уровнем сложности
 function renderGameZone1(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 3; i++) {
@@ -299,7 +302,7 @@ function renderGameZone1(container: HTMLElement) {
 }
 
 function renderGameZone2(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 6; i++) {
@@ -340,7 +343,7 @@ function renderGameZone2(container: HTMLElement) {
 }
 
 function renderGameZone3(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 9; i++) {
@@ -417,7 +420,7 @@ let sec
 let milS
 let second = 0,
     mil = 0,
-    interval: number
+    interval: NodeJS.Timer
 
 function startTimer() {
     let milElem = document.querySelector('.timer-mil')
@@ -430,7 +433,7 @@ function startTimer() {
     }
 
     if (mil >= 10) {
-        milElem.textContent = mil
+        milElem.textContent = String(mil)
     }
 
     if (mil > 59) {
@@ -449,7 +452,7 @@ function startTimer() {
         secElem.textContent = '0' + second
     }
     if (second > 9) {
-        secElem.textContent = second
+        secElem.textContent = String(second)
     }
     // if (second > 59) {
     //     clearInterval(interval)
@@ -496,7 +499,7 @@ function renderLevelsButton(container: HTMLElement) {
     for (let i = 1; i <= 3; i++) {
         const levelButton = document.createElement('input')
         levelButton.setAttribute('type', 'button')
-        levelButton.setAttribute('value', i)
+        levelButton.setAttribute('value', String(i))
         levelButton.classList.add('level-main-button')
         container.appendChild(levelButton)
 
@@ -528,7 +531,7 @@ function renderLevelsButton(container: HTMLElement) {
 
 let startButton: HTMLElement
 
-function levelsEvent(param: MouseEvent) {
+function levelsEvent(param: String) {
     startButton.addEventListener('click', () => {
         game.renderScreen('game')
         console.log(`Уровень сложности ${param}`)
@@ -586,44 +589,42 @@ renderStartMenu()
 
 // Инициализация изображений для карточек
 game.cards = [
-    [
-        './img/10бубны.png',
-        './img/10крести.png',
-        './img/10пики.png',
-        './img/10черви.png',
-        './img/6бубны.png',
-        './img/6крести.png',
-        './img/6пики.png',
-        './img/6черви.png',
-        './img/7бубны.png',
-        './img/7крести.png',
-        './img/7пики.png',
-        './img/7черви.png',
-        './img/8бубны.png',
-        './img/8крести.png',
-        './img/8пики.png',
-        './img/8черви.png',
-        './img/9бубны.png',
-        './img/9крести.png',
-        './img/9пики.png',
-        './img/9черви.png',
-        './img/валетБубны.png',
-        './img/валетКрести.png',
-        './img/валетПики.png',
-        './img/валетЧерви.png',
-        './img/дамаБубны.png',
-        './img/дамаКрести.png',
-        './img/дамаПики.png',
-        './img/дамаЧерви.png',
-        './img/корольБубны.png',
-        './img/корольКрести.png',
-        './img/корольПики.png',
-        './img/корольЧерви.png',
-        './img/тузБубны.png',
-        './img/тузКрести.png',
-        './img/тузПики.png',
-        './img/тузЧерви.png',
-    ],
+    './img/10бубны.png',
+    './img/10крести.png',
+    './img/10пики.png',
+    './img/10черви.png',
+    './img/6бубны.png',
+    './img/6крести.png',
+    './img/6пики.png',
+    './img/6черви.png',
+    './img/7бубны.png',
+    './img/7крести.png',
+    './img/7пики.png',
+    './img/7черви.png',
+    './img/8бубны.png',
+    './img/8крести.png',
+    './img/8пики.png',
+    './img/8черви.png',
+    './img/9бубны.png',
+    './img/9крести.png',
+    './img/9пики.png',
+    './img/9черви.png',
+    './img/валетБубны.png',
+    './img/валетКрести.png',
+    './img/валетПики.png',
+    './img/валетЧерви.png',
+    './img/дамаБубны.png',
+    './img/дамаКрести.png',
+    './img/дамаПики.png',
+    './img/дамаЧерви.png',
+    './img/корольБубны.png',
+    './img/корольКрести.png',
+    './img/корольПики.png',
+    './img/корольЧерви.png',
+    './img/тузБубны.png',
+    './img/тузКрести.png',
+    './img/тузПики.png',
+    './img/тузЧерви.png',
 ]
 // Запуск начального экрана
 game.renderScreen('start')
