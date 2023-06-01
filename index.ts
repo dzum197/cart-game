@@ -387,7 +387,11 @@ function renderAgainButton(container: HTMLElement) {
     againButton.addEventListener('click', () => {
         const gameCards = document.querySelectorAll('.main-game-card')
         gameCards.forEach((card) => card.classList.remove('flipped'))
-
+        dot = 0
+        sec = 0
+        milS = 0
+        second = 0
+        mil = 0
         clearInterval(interval)
         renderGameScreen() // функция начала игры
         // resetGame()
@@ -479,6 +483,8 @@ game.blocks['timer'] = renderTimer
 
 function renderGameScreen() {
     levelDifficulty()
+    document.querySelector('.app').innerHTML = ''
+
     const gameZoneContainer = document.createElement('div')
     gameZoneContainer.classList.add('game')
 
