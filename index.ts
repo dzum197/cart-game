@@ -19,12 +19,12 @@ interface IGame {
     level: any //
     levelSelected: string
     successfulPairs: number
-    cards: string[]
+    cards: Array<string>
     renderScreen: (screenName: string) => void
     renderBlock: (blockName: string, container: HTMLElement) => void
 }
 
-let app: HTMLElement | null = null
+let app = document.querySelector('.app') as HTMLElement
 
 const game: IGame = {
     blocks: {},
@@ -103,13 +103,8 @@ function createCard(container: HTMLElement, cardIndex: number) {
 
     const front = document.createElement('img')
     front.classList.add('front-card')
-    // front.src = `${game.cards[0][cardIndex]}`
     front.setAttribute('src', `${game.cards[0][cardIndex]}`)
-    // back.setAttribute('src', 'img/рубашка.png')
     card.appendChild(front)
-
-    // img.src = `${window.application.cards[0][cardIndex]}`
-    // img.src = `${game.cards[0][cardIndex]}`
 
     const back = document.createElement('img')
     back.classList.add('back-card')
@@ -127,10 +122,9 @@ function createCard(container: HTMLElement, cardIndex: number) {
 
 let hasFlippedCard = false
 let lockBoard = false
-let firstCardImg: Element | null = null
-let secondCardImg: Element | null = null
-// let firstCardImg = null
-// let secondCardImg = null
+// let firstCardImg: Element | null = null
+// let secondCardImg: Element | null = null
+let firstCardImg: HTMLImageElement, secondCardImg: HTMLImageElement
 
 function getNumberOfPairs(level: string) {
     if (level === 'easy') {
@@ -165,10 +159,7 @@ function handleCardClick(event: MouseEvent) {
 }
 
 function flipCard(card: HTMLElement) {
-    // let firstCardImg: HTMLImageElement | null = null
-    // let secondCardImg: HTMLImageElement | null = null
-
-    const cardImg = card.querySelector('.front-card')
+    const cardImg = card.querySelector('.front-card') as HTMLImageElement
 
     if (lockBoard) return
     if (card.classList.contains('matched')) return
@@ -193,25 +184,33 @@ function flipCard(card: HTMLElement) {
 // проверка на совпадение карт
 function checkForMatch() {
     if (firstCardImg.src === secondCardImg.src) {
-        firstCardImg.parentElement.classList.add('matched')
-        secondCardImg.parentElement.classList.add('matched')
+        firstCardImg.parentElement!.classList.add('matched')
+        secondCardImg.parentElement!.classList.add('matched')
         game.successfulPairs++
         if (game.successfulPairs === Number(game.level) * 3) {
-            const min = Number(document.querySelector('.timer-sec').textContent)
-            const sec = Number(document.querySelector('.timer-mil').textContent)
+            const min = Number(
+                document.querySelector('.timer-sec')!.textContent
+            )
+            const sec = Number(
+                document.querySelector('.timer-mil')!.textContent
+            )
             console.log(sec, min)
 
             const timeString = min
                 ? String(min) + ' min ' + String(sec) + ' sec '
                 : String(sec) + ' sec '
-            alert(`Поздравляем, вы победили! Затраченное время ${timeString}`)
+            // alert(`Поздравляем, вы победили! Затраченное время ${timeString}`)
+            clearInterval(interval)
+            renderWinScreen()
+            // renderResultScreen()
         }
     } else {
-        firstCardImg.parentElement.classList.remove('flipped')
-        secondCardImg.parentElement.classList.remove('flipped')
+        firstCardImg.parentElement!.classList.remove('flipped')
+        secondCardImg.parentElement!.classList.remove('flipped')
         clearInterval(interval)
-        alert('Вы проиграли!')
+        // alert('Вы проиграли!')
         sec = 0
+        renderLoseScreen()
     }
 
     lockBoard = false
@@ -258,7 +257,7 @@ function shuffle(array: string[]) {
 
 // генерация количества карточек в соответствии с уровнем сложности
 function renderGameZone1(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 3; i++) {
@@ -299,7 +298,7 @@ function renderGameZone1(container: HTMLElement) {
 }
 
 function renderGameZone2(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 6; i++) {
@@ -340,7 +339,7 @@ function renderGameZone2(container: HTMLElement) {
 }
 
 function renderGameZone3(container: HTMLElement) {
-    const cardsArr = shuffle(game.cards[0])
+    const cardsArr = shuffle(game.cards)
     const cardField = []
 
     for (let i = 0; i < 9; i++) {
@@ -388,8 +387,30 @@ function renderAgainButton(container: HTMLElement) {
     againButton.addEventListener('click', () => {
         const gameCards = document.querySelectorAll('.main-game-card')
         gameCards.forEach((card) => card.classList.remove('flipped'))
+
+        clearInterval(interval)
+        renderGameScreen() // функция начала игры
+        // resetGame()
     })
 }
+
+// function resetGame() {
+//     // Сброс всех карт на лицевую сторону
+//     const gameCards = document.querySelectorAll('.main-game-card')
+//     gameCards.forEach((card) => {
+//         card.classList.remove('matched')
+//         card.classList.remove('flipped')
+//     })
+
+//     // Сброс времени, если есть таймер
+//     // ...
+
+//     const timerElement = document.querySelector('.timer')
+//     if (timerElement) {
+//         // timerElement.textContent = '0:00'
+//         clearInterval(interval)
+//     }
+// }
 
 function renderTimer(container: HTMLElement) {
     const timer = document.createElement('div')
@@ -417,12 +438,11 @@ let sec
 let milS
 let second = 0,
     mil = 0,
-    interval: number
+    interval: NodeJS.Timer
 
 function startTimer() {
     let milElem = document.querySelector('.timer-mil')
     let secElem = document.querySelector('.timer-sec')
-    // console.log(mil)
 
     mil++
     if (mil < 9) {
@@ -430,7 +450,7 @@ function startTimer() {
     }
 
     if (mil >= 10) {
-        milElem.textContent = mil
+        milElem.textContent = String(mil)
     }
 
     if (mil > 59) {
@@ -440,8 +460,9 @@ function startTimer() {
         milElem.textContent = '0' + mil
 
         clearInterval(interval)
-        alert('Вы проиграли!')
+        // alert('Вы проиграли!')
         sec = 0
+        renderLoseScreen()
     }
 
     // секунды
@@ -449,15 +470,8 @@ function startTimer() {
         secElem.textContent = '0' + second
     }
     if (second > 9) {
-        secElem.textContent = second
+        secElem.textContent = String(second)
     }
-    // if (second > 59) {
-    //     clearInterval(interval)
-    //     alert('Вы проиграли!')
-    //     sec = 0
-
-    //     // Экран поражения
-    // }
 }
 
 game.blocks['again-button'] = renderAgainButton
@@ -488,7 +502,6 @@ function renderGameScreen() {
 }
 
 // Добавляем "game" в список завершённых экранов
-// window.application.screens['game'] = renderGameScreen
 game.screens['game'] = renderGameScreen
 
 // уровни
@@ -496,7 +509,7 @@ function renderLevelsButton(container: HTMLElement) {
     for (let i = 1; i <= 3; i++) {
         const levelButton = document.createElement('input')
         levelButton.setAttribute('type', 'button')
-        levelButton.setAttribute('value', i)
+        levelButton.setAttribute('value', String(i))
         levelButton.classList.add('level-main-button')
         container.appendChild(levelButton)
 
@@ -528,7 +541,7 @@ function renderLevelsButton(container: HTMLElement) {
 
 let startButton: HTMLElement
 
-function levelsEvent(param: MouseEvent) {
+function levelsEvent(param: String) {
     startButton.addEventListener('click', () => {
         game.renderScreen('game')
         console.log(`Уровень сложности ${param}`)
@@ -549,9 +562,6 @@ function renderMenuTitle(container: HTMLElement) {
     container.appendChild(levelTitle)
 }
 
-// window.application.blocks['menu-title'] = renderMenuTitle
-// window.application.blocks['level-button'] = renderLevelsButton
-// window.application.blocks['start-button'] = renderStartButton
 game.blocks['menu-title'] = renderMenuTitle
 game.blocks['level-button'] = renderLevelsButton
 game.blocks['start-button'] = renderStartButton
@@ -575,9 +585,6 @@ function renderStartMenu() {
 
     app.appendChild(startMenuContainer)
 
-    // window.application.renderBlock('menu-title', startMenuHeader)
-    // window.application.renderBlock('level-button', startMenuLevel)
-    // window.application.renderBlock('start-button', startMenuStart)
     game.renderBlock('menu-title', startMenuHeader)
     game.renderBlock('level-button', startMenuLevel)
     game.renderBlock('start-button', startMenuStart)
@@ -586,44 +593,138 @@ renderStartMenu()
 
 // Инициализация изображений для карточек
 game.cards = [
-    [
-        './img/10бубны.png',
-        './img/10крести.png',
-        './img/10пики.png',
-        './img/10черви.png',
-        './img/6бубны.png',
-        './img/6крести.png',
-        './img/6пики.png',
-        './img/6черви.png',
-        './img/7бубны.png',
-        './img/7крести.png',
-        './img/7пики.png',
-        './img/7черви.png',
-        './img/8бубны.png',
-        './img/8крести.png',
-        './img/8пики.png',
-        './img/8черви.png',
-        './img/9бубны.png',
-        './img/9крести.png',
-        './img/9пики.png',
-        './img/9черви.png',
-        './img/валетБубны.png',
-        './img/валетКрести.png',
-        './img/валетПики.png',
-        './img/валетЧерви.png',
-        './img/дамаБубны.png',
-        './img/дамаКрести.png',
-        './img/дамаПики.png',
-        './img/дамаЧерви.png',
-        './img/корольБубны.png',
-        './img/корольКрести.png',
-        './img/корольПики.png',
-        './img/корольЧерви.png',
-        './img/тузБубны.png',
-        './img/тузКрести.png',
-        './img/тузПики.png',
-        './img/тузЧерви.png',
-    ],
+    './img/10бубны.png',
+    './img/10крести.png',
+    './img/10пики.png',
+    './img/10черви.png',
+    './img/6бубны.png',
+    './img/6крести.png',
+    './img/6пики.png',
+    './img/6черви.png',
+    './img/7бубны.png',
+    './img/7крести.png',
+    './img/7пики.png',
+    './img/7черви.png',
+    './img/8бубны.png',
+    './img/8крести.png',
+    './img/8пики.png',
+    './img/8черви.png',
+    './img/9бубны.png',
+    './img/9крести.png',
+    './img/9пики.png',
+    './img/9черви.png',
+    './img/валетБубны.png',
+    './img/валетКрести.png',
+    './img/валетПики.png',
+    './img/валетЧерви.png',
+    './img/дамаБубны.png',
+    './img/дамаКрести.png',
+    './img/дамаПики.png',
+    './img/дамаЧерви.png',
+    './img/корольБубны.png',
+    './img/корольКрести.png',
+    './img/корольПики.png',
+    './img/корольЧерви.png',
+    './img/тузБубны.png',
+    './img/тузКрести.png',
+    './img/тузПики.png',
+    './img/тузЧерви.png',
 ]
 // Запуск начального экрана
 game.renderScreen('start')
+
+function renderWinScreen() {
+    const winScreenContainer = document.createElement('div')
+    winScreenContainer.classList.add('win-screen-container')
+
+    const winScreen = document.createElement('div')
+    winScreen.classList.add('win-screen')
+
+    const winImgDiv = document.createElement('div')
+    winImgDiv.classList.add('win-img-div')
+    const winImg = document.createElement('img')
+    winImg.setAttribute('src', './img/win.png')
+    winImg.classList.add('win-img')
+
+    const winScreenHeader = document.createElement('div')
+    winScreenHeader.classList.add('win-header')
+    winScreenHeader.textContent = 'Вы победили!'
+
+    const min = Number(document.querySelector('.timer-sec')!.textContent)
+    const sec = Number(document.querySelector('.timer-mil')!.textContent)
+    console.log(sec, min)
+
+    const timeString = min
+        ? String(min) + ' min ' + String(sec) + ' sec '
+        : String(sec) + ' sec '
+
+    const winScreenTime = document.createElement('div')
+    winScreenTime.classList.add('time-text')
+    winScreenTime.textContent = 'Затраченное время: ' + `${timeString}`
+    // ${timeString}
+
+    const winAgainButton = document.createElement('button')
+    winAgainButton.classList.add('win-again-button')
+    winAgainButton.textContent = 'Играть снова'
+
+    winScreenContainer.appendChild(winScreen)
+    winScreen.appendChild(winImgDiv)
+    winImgDiv.appendChild(winImg)
+    winScreen.appendChild(winScreenHeader)
+    winScreen.appendChild(winScreenTime)
+    winScreen.appendChild(winAgainButton)
+
+    app.appendChild(winScreenContainer)
+
+    game.renderBlock('win-screen', winScreen)
+    game.renderBlock('win-img-div', winImgDiv)
+    game.renderBlock('win-img', winImg)
+    game.renderBlock('win-header', winScreenHeader)
+    game.renderBlock('time-text', winScreenTime)
+    game.renderBlock('win-again-button', winAgainButton)
+}
+
+function renderLoseScreen() {
+    const loseScreenContainer = document.createElement('div')
+    loseScreenContainer.classList.add('lose-screen-container')
+
+    // const loseImgDiv = document.createElement('div')
+    const loseImg = document.createElement('img')
+    loseImg.setAttribute('src', './img/lose.png')
+    loseImg.classList.add('lose-img')
+
+    const loseScreenHeader = document.createElement('div')
+    loseScreenHeader.classList.add('lose-header')
+    loseScreenHeader.textContent = 'Вы проиграли'
+
+    const min = Number(document.querySelector('.timer-sec')!.textContent)
+    const sec = Number(document.querySelector('.timer-mil')!.textContent)
+    console.log(sec, min)
+
+    const timeString = min
+        ? String(min) + ' min ' + String(sec) + ' sec '
+        : String(sec) + ' sec '
+
+    const loseScreenTime = document.createElement('div')
+    loseScreenTime.classList.add('time-text')
+    loseScreenTime.textContent = 'Затраченное время: ' + `${timeString}`
+    // ${timeString}
+
+    const loseAgainButton = document.createElement('button')
+    loseAgainButton.classList.add('lose-again-button')
+    loseAgainButton.textContent = 'Играть снова'
+
+    loseScreenContainer.appendChild(loseScreenHeader)
+    loseScreenContainer.appendChild(loseImg)
+    loseScreenContainer.appendChild(loseScreenTime)
+    loseScreenContainer.appendChild(loseAgainButton)
+
+    app.appendChild(loseScreenContainer)
+
+    game.renderBlock('lose-img', loseImg)
+    game.renderBlock('lose-header', loseScreenHeader)
+    game.renderBlock('time-text', loseScreenTime)
+    game.renderBlock('lose-again-button', loseAgainButton)
+}
+
+// renderResultScreen()
