@@ -213,11 +213,16 @@ body {
 
 .win-screen {
     display: flex;
+    flex-direction: column;
 }
 
 .win-img, .lose-img {
     width: 96px;
     height: 96px;
+
+    /* display: flex;
+    justify-content: flex-start;
+    align-items: center; */
 }
 
 .win-header, .lose-header {

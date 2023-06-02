@@ -388,29 +388,15 @@ function renderAgainButton(container: HTMLElement) {
         const gameCards = document.querySelectorAll('.main-game-card')
         gameCards.forEach((card) => card.classList.remove('flipped'))
 
+        dot = 0
+        sec = 0
+        milS = 0
+        second = 0
+        mil = 0
         clearInterval(interval)
         renderGameScreen() // функция начала игры
-        // resetGame()
     })
 }
-
-// function resetGame() {
-//     // Сброс всех карт на лицевую сторону
-//     const gameCards = document.querySelectorAll('.main-game-card')
-//     gameCards.forEach((card) => {
-//         card.classList.remove('matched')
-//         card.classList.remove('flipped')
-//     })
-
-//     // Сброс времени, если есть таймер
-//     // ...
-
-//     const timerElement = document.querySelector('.timer')
-//     if (timerElement) {
-//         // timerElement.textContent = '0:00'
-//         clearInterval(interval)
-//     }
-// }
 
 function renderTimer(container: HTMLElement) {
     const timer = document.createElement('div')
@@ -479,6 +465,9 @@ game.blocks['timer'] = renderTimer
 
 function renderGameScreen() {
     levelDifficulty()
+
+    document.querySelector('.app').innerHTML = ''
+
     const gameZoneContainer = document.createElement('div')
     gameZoneContainer.classList.add('game')
 
@@ -661,11 +650,14 @@ function renderWinScreen() {
     const winScreenTime = document.createElement('div')
     winScreenTime.classList.add('time-text')
     winScreenTime.textContent = 'Затраченное время: ' + `${timeString}`
-    // ${timeString}
 
     const winAgainButton = document.createElement('button')
     winAgainButton.classList.add('win-again-button')
     winAgainButton.textContent = 'Играть снова'
+
+    winAgainButton.addEventListener('click', () => {
+        renderStartMenu() // функция начала игры
+    })
 
     winScreenContainer.appendChild(winScreen)
     winScreen.appendChild(winImgDiv)
@@ -681,21 +673,25 @@ function renderWinScreen() {
     game.renderBlock('win-img', winImg)
     game.renderBlock('win-header', winScreenHeader)
     game.renderBlock('time-text', winScreenTime)
-    game.renderBlock('win-again-button', winAgainButton)
+    game.renderBlock('again-button', winAgainButton)
 }
 
 function renderLoseScreen() {
     const loseScreenContainer = document.createElement('div')
-    loseScreenContainer.classList.add('lose-screen-container')
+    loseScreenContainer.classList.add('win-screen-container')
 
-    // const loseImgDiv = document.createElement('div')
+    const loseScreen = document.createElement('div')
+    loseScreen.classList.add('win-screen')
+
+    const loseImgDiv = document.createElement('div')
+    loseImgDiv.classList.add('lose-img-div')
     const loseImg = document.createElement('img')
     loseImg.setAttribute('src', './img/lose.png')
     loseImg.classList.add('lose-img')
 
     const loseScreenHeader = document.createElement('div')
     loseScreenHeader.classList.add('lose-header')
-    loseScreenHeader.textContent = 'Вы проиграли'
+    loseScreenHeader.textContent = 'Вы победили!'
 
     const min = Number(document.querySelector('.timer-sec')!.textContent)
     const sec = Number(document.querySelector('.timer-mil')!.textContent)
@@ -708,19 +704,26 @@ function renderLoseScreen() {
     const loseScreenTime = document.createElement('div')
     loseScreenTime.classList.add('time-text')
     loseScreenTime.textContent = 'Затраченное время: ' + `${timeString}`
-    // ${timeString}
 
     const loseAgainButton = document.createElement('button')
     loseAgainButton.classList.add('lose-again-button')
     loseAgainButton.textContent = 'Играть снова'
 
-    loseScreenContainer.appendChild(loseScreenHeader)
-    loseScreenContainer.appendChild(loseImg)
-    loseScreenContainer.appendChild(loseScreenTime)
-    loseScreenContainer.appendChild(loseAgainButton)
+    loseAgainButton.addEventListener('click', () => {
+        renderStartMenu() // функция начала игры
+    })
+
+    loseScreenContainer.appendChild(loseScreen)
+    loseScreen.appendChild(loseImgDiv)
+    loseImgDiv.appendChild(loseImg)
+    loseScreen.appendChild(loseScreenHeader)
+    loseScreen.appendChild(loseScreenTime)
+    loseScreen.appendChild(loseAgainButton)
 
     app.appendChild(loseScreenContainer)
 
+    game.renderBlock('lose-screen', loseScreen)
+    game.renderBlock('lose-img-div', loseImgDiv)
     game.renderBlock('lose-img', loseImg)
     game.renderBlock('lose-header', loseScreenHeader)
     game.renderBlock('time-text', loseScreenTime)
