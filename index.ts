@@ -219,14 +219,7 @@ function checkForMatch() {
     secondCardImg = null
 }
 
-// successfulPairs += 1
-
-// if (game.successfulPairs === numberOfPairs) {
-//     alert('Поздравляем, вы победили!')
-// }
-
 function levelDifficulty() {
-    // const level = window.application.level[window.application.level.length - 1]
     const level = game.level[game.level.length - 1]
 
     switch (level) {
@@ -556,6 +549,7 @@ game.blocks['level-button'] = renderLevelsButton
 game.blocks['start-button'] = renderStartButton
 
 function renderStartMenu() {
+    app.replaceChildren()
     const startMenuContainer = document.createElement('div')
     startMenuContainer.classList.add('level')
 
@@ -673,7 +667,7 @@ function renderWinScreen() {
     game.renderBlock('win-img', winImg)
     game.renderBlock('win-header', winScreenHeader)
     game.renderBlock('time-text', winScreenTime)
-    game.renderBlock('again-button', winAgainButton)
+    game.renderBlock('win-again-button', winAgainButton)
 }
 
 function renderLoseScreen() {
@@ -691,7 +685,7 @@ function renderLoseScreen() {
 
     const loseScreenHeader = document.createElement('div')
     loseScreenHeader.classList.add('lose-header')
-    loseScreenHeader.textContent = 'Вы победили!'
+    loseScreenHeader.textContent = 'Вы проиграли :('
 
     const min = Number(document.querySelector('.timer-sec')!.textContent)
     const sec = Number(document.querySelector('.timer-mil')!.textContent)
@@ -729,5 +723,3 @@ function renderLoseScreen() {
     game.renderBlock('time-text', loseScreenTime)
     game.renderBlock('lose-again-button', loseAgainButton)
 }
-
-// renderResultScreen()
