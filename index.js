@@ -124,10 +124,10 @@ let successfulPairs = 0 // количество успешных пар
 const levelSelect = game.levelSelected
 let selectedLevel = levelSelect.value
 
-levelSelect.addEventListener('change', (event) => {
-    selectedLevel = event.target.value
-    numberOfPairs = getNumberOfPairs(selectedLevel)
-})
+// levelSelect.addEventListener('change', (event) => {
+//     selectedLevel = event.target.value
+//     numberOfPairs = getNumberOfPairs(selectedLevel)
+// })
 
 let numberOfPairs = getNumberOfPairs(selectedLevel) // количество пар для выбранного уровня сложности
 
@@ -164,13 +164,21 @@ function flipCard(card) {
     }, 800)
 }
 
+// проверка на совпадение карт
 function checkForMatch() {
     if (firstCardImg.src === secondCardImg.src) {
         firstCardImg.parentElement.classList.add('matched')
         secondCardImg.parentElement.classList.add('matched')
-        // добавить их в массив successfulCards
-        // successfulCards.push(firstCardImg)
-        // successfulCards.push(secondCardImg)
+        game.successfulPairs++
+        if (game.successfulPairs === Number(game.level) * 3) {
+            const min = Number(document.querySelector('.timer-sec').textContent)
+            const sec = Number(document.querySelector('.timer-mil').textContent)
+            console.log(sec, min)
+            const timeString = min
+                ? String(min) + ' min ' + String(sec) + ' sec '
+                : String(sec) + ' sec '
+            alert(`Поздравляем, вы победили! Затраченное время ${timeString}`)
+        }
     } else {
         firstCardImg.parentElement.classList.remove('flipped')
         secondCardImg.parentElement.classList.remove('flipped')
@@ -186,39 +194,10 @@ function checkForMatch() {
 }
 
 // successfulPairs += 1
-game.successfulPairs++
 
-if (successfulPairs === numberOfPairs) {
-    alert('Поздравляем, вы победили!')
-}
-
-// // получение уровней сложности из localStorage
-// function saveDifficulty(difficulty) {
-//     localStorage.setItem('difficulty', difficulty)
+// if (game.successfulPairs === numberOfPairs) {
+//     alert('Поздравляем, вы победили!')
 // }
-
-// function getDifficulty() {
-//     return localStorage.getItem('difficulty') || 'defaultDifficulty'
-// }
-
-// saveDifficulty()
-
-// // получить сохраненный уровень сложности
-// const currentDifficulty = getDifficulty()
-
-// function saveSelectedPairs(selectedPairs) {
-//     localStorage.setItem('selectedPairs', JSON.stringify(selectedPairs))
-// }
-
-// function getSelectedPairs() {
-//     const selectedPairs = localStorage.getItem('selectedPairs')
-//     return selectedPairs ? JSON.parse(selectedPairs) : []
-// }
-
-// saveSelectedPairs([])
-
-// // получение сохраненных пар
-// const currentSelectedPairs = getSelectedPairs()
 
 function levelDifficulty() {
     // const level = window.application.level[window.application.level.length - 1]
