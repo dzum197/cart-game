@@ -40,7 +40,7 @@ let cards = [
 const cardObj = {}
 
 for (let i = 0; i < cards.length; i++) {
-    cardObj[i] = cards[i]
+    const cardObj: {[index: number]: string} = {}
 }
 
 console.log(cardObj)
