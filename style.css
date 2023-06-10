@@ -104,8 +104,7 @@ body {
     transition: 0.2s ease;
 }
 
-.level-footer-button:hover,
-.start-button:hover, .win-again-button:hover, .lose-again-button:hover {
+.level-footer-button:hover, .start-button:hover {
     transform: scale(1.02);
     box-shadow: 0 1px 0 0 rgb(48 48 48 / 67.1%);
 }
